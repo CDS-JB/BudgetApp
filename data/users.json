@@ -3,24 +3,28 @@
 		"firstName":"Jake",
 		"lastName":"Peralta",
 		"age":32,
-		"emailAddress":"j.peralta@gmail.com"
+		"emailAddress":"j.peralta@gmail.com",
+		"password":"password1"
 	},
 	{
 		"firstName":"Amy",
 		"lastName":"Santiago",
 		"age":32,
 		"emailAddress":"a.Santiago@gmail.com"
+		"password":"password2"
 	},
 	{
 		"firstName":"Charles",
 		"lastName":"Boyle",		
 		"age":36,
 		"emailAddress":"c.boyle@gmail@gmail.com"
+		"password":"password3"
 	},
 	{
 		"firstName":"Raymond",
 		"lastName":"Holt",
 		"age":57,
 		"emailAddress":"r.holt@gmail.com"
+		"password":"password4"
 	}
 ]

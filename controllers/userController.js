@@ -52,7 +52,7 @@ module.exports = {
         console.info(o_id);
         app.get('myDb').collection("usersCollection").updateOne(
             { _id: o_id },
-            { $set: { "firstName": amendUser.firstName, "lastName": amendUser.lastName, "emailAddress": amendUser.emailAddress, "age": amendUser.age } },
+            { $set: { "firstName": amendUser.firstName, "lastName": amendUser.lastName, "emailAddress": amendUser.emailAddress, "age": amendUser.age , "password":amendUser.password} },
             function (err, dbResp) {
                 if (err) {
                     console.error(err)
