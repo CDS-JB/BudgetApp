@@ -4,36 +4,40 @@ var ObjectId = require('mongodb').ObjectId;
 
 module.exports = {
     viewAll: function (app, req, res) {
-        console.info("View All Transactions controller")
+        console.info("Transactions controller - View all transactions")
         app.set('myDb').collection('transactionsCollection').find({}).toArray(function (err, docs) {
             if (err) {
                 console.error(err)
             }
+            console.dir(docs);
             res.json(docs)
         })
     },
-    viewAllOutgoings: function (app, req, res) {
-        console.info("View All Incoming Transactions controller")
-        app.set('myDb').collection('transactionsCollection').find({"transactionType": "incoming"}).toArray(function(err, docs) {
+    viewAllForUser: function (app, req, res) {
+        console.info("Transactions controller - View all transactions for user")
+        let userID = req.params.userID;
+        app.set('myDb').collection('transactionsCollection').find({"userID": userID}).toArray(function (err, docs) {
             if (err) {
                 console.error(err)
             }
+            console.dir(docs);
+            res.json(docs)
+        })
+    },
+    viewIncomingsForUser: function (app, req, res) {
+        console.info("Transactions controller - View all incoming transactions for user")
+        let userID = req.params.userID;
+        app.set('myDb').collection('transactionsCollection').find({"transactionType": "incoming","userID": userID}).toArray(function(err, docs) {
+            if (err) {
+                console.error(err)
+            }
+            console.dir(docs);
             return res.json(docs)
         })
     },
-    viewAllOutgoings: function (app, req, res) {
-        console.info("View All Outgoing Transactions controller")
-        app.set('myDb').collection('transactionsCollection').find({"transactionType": "outgoing"}).toArray(function(err, docs) {
-            if (err) {
-                console.error(err)
-            }
-            return res.json(docs)
-        })
-    },viewAllFromUser: function (app, req, res) {
-        console.info("View All Transactions For User controller")
-        let userID = req.params.userID;
-        var o_id = new ObjectId(transactionID);
-        app.set('myDb').collection('transactionsCollection').find({"userID": userID}).toArray(function(err, docs) {
+    viewOutgoingsForUser: function (app, req, res) {
+        console.info("Transactions controller - View all outgoing transactions for user")
+        app.set('myDb').collection('transactionsCollection').find({"transactionType": "outgoing","userID": userID}).toArray(function(err, docs) {
             if (err) {
                 console.error(err)
             }
@@ -42,7 +46,7 @@ module.exports = {
         })
     },
     viewItem: function (app, req, res) {
-        console.info("View One Transaction controller")
+        console.info("Transactions controller - View one transaction")
         let transactionID = req.params.transactionID;
         var o_id = new ObjectId(transactionID);
         app.set('myDb').collection('transactionsCollection').find({"_id": o_id}).toArray(function(err, docs) {
