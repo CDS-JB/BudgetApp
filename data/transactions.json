@@ -1,0 +1,32 @@
+[
+	{
+		"transactionType":"incoming",
+		"lastName":"Peralta",
+		"age":32,
+		"emailAddress":"j.peralta@gmail.com"
+	},
+	{
+		"transactionType":"outgoing",
+		"lastName":"Santiago",
+		"age":32,
+		"emailAddress":"a.Santiago@gmail.com"
+	},
+	{
+		"transactionType":"incoming",
+		"lastName":"Boyle",		
+		"age":36,
+		"emailAddress":"c.boyle@gmail@gmail.com"
+	},
+	{
+		"transactionType":"incoming",
+		"lastName":"Holt",
+		"age":57,
+		"emailAddress":"r.holt@gmail.com"
+	},
+	{
+		"transactionType":"outgoing",
+		"lastName":"Santiago",
+		"age":32,
+		"emailAddress":"a.Santiago@gmail.com"
+	}
+]
