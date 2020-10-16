@@ -10,21 +10,21 @@
 		"firstName":"Amy",
 		"lastName":"Santiago",
 		"age":32,
-		"emailAddress":"a.Santiago@gmail.com"
+		"emailAddress":"a.Santiago@gmail.com",
 		"password":"password2"
 	},
 	{
 		"firstName":"Charles",
 		"lastName":"Boyle",		
 		"age":36,
-		"emailAddress":"c.boyle@gmail@gmail.com"
+		"emailAddress":"c.boyle@gmail@gmail.com",
 		"password":"password3"
 	},
 	{
 		"firstName":"Raymond",
 		"lastName":"Holt",
 		"age":57,
-		"emailAddress":"r.holt@gmail.com"
+		"emailAddress":"r.holt@gmail.com",
 		"password":"password4"
 	}
 ]
