@@ -36,7 +36,7 @@ module.exports = (app) => {
     router.get('/api/incomings/:userID', (req, res) => {
         transactionController.viewIncomingsForUser(app, req, res);
     });
-    router.get('//apioutgoings/:userID', (req, res) => {
+    router.get('/api/outgoings/:userID', (req, res) => {
         transactionController.viewOutgoingsForUser(app, req, res);
     });
     router.get('/api/transaction/:transactionID', (req, res) => {
@@ -51,12 +51,7 @@ module.exports = (app) => {
     router.delete('/api/transaction', (req, res) => {
         transactionController.deleteItem(app, req, res);
     });
-    router.get('/alloutgoings', (req, res) => {
-        transactionController.viewAllOutgoings(app, req, res);
-    });
-
 
   
     return router;
-
 }
