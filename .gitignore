@@ -102,3 +102,7 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Exclude compiled public files
+public/css/app.css
+public/js/vue.js
