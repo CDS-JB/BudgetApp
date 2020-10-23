@@ -1,32 +1,35 @@
 [
 	{
 		"transactionType":"incoming",
-		"lastName":"Peralta",
-		"age":32,
-		"emailAddress":"j.peralta@gmail.com"
+		"amount":32,
+		"DateTime":"2020-03-10 08:41:01",
+		"userID":"2"
+		"Type":"Transfer"
 	},
 	{
 		"transactionType":"outgoing",
-		"lastName":"Santiago",
-		"age":32,
-		"emailAddress":"a.Santiago@gmail.com"
+		"amount":3.50,
+		"DateTime":"2020-03-10 08:41:01",
+		"userID":"2"
+		"Type":"Groceries"
 	},
-	{
-		"transactionType":"incoming",
-		"lastName":"Boyle",		
-		"age":36,
-		"emailAddress":"c.boyle@gmail@gmail.com"
+	{"transactionType":"outgoing",
+		"amount":3.50,
+		"DateTime":"2020-03-10 08:41:01",
+		"userID":"2"
+		"Type":"Groceries"
 	},
-	{
-		"transactionType":"incoming",
-		"lastName":"Holt",
-		"age":57,
-		"emailAddress":"r.holt@gmail.com"
+	{"transactionType":"incoming",
+		"amount":500,
+		"DateTime":"2020-03-10 08:41:01",
+		"userID":"2"
+		"Type":"Salary"
 	},
 	{
 		"transactionType":"outgoing",
-		"lastName":"Santiago",
-		"age":32,
-		"emailAddress":"a.Santiago@gmail.com"
+		"amount":3.50,
+		"DateTime":"2020-03-10 08:41:01",
+		"userID":"2"
+		"Type":"Groceries"
 	}
 ]
