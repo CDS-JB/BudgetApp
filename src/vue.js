@@ -6,6 +6,9 @@ import VueRouter from 'vue-router';
 // Import components for router
 import Welcome from './components/welcome';
 import NotFound from './components/notFound';
+// import Report from './components/report';
+import Login from './components/login';
+import Register from './components/register';
 
 // Import App
 import App from './app';
@@ -22,6 +25,9 @@ const router = new VueRouter({
 
     routes: [
         {path: '/', component: Welcome, meta: {title: 'Welcome'}},
+        {path: '/login', component: Login, meta: {title: 'Login'}},
+        {path: '/register', component: Register, meta: {title: 'Register'}},
+        // {path: '/report', component: Report, meta: {title: 'Report'}},
         {path: '*', component: NotFound, meta: {title: 'Not Found'}} // Render 404 page if url doesn't match other routes
     ]
 });
@@ -33,7 +39,6 @@ router.beforeEach((to, from, next) => {
 });
 
 // Render Vue
-
 new Vue({
     router,
     render: h => h(App)
