@@ -27,7 +27,12 @@ export default {
 
     methods:{
         submit(){
-            console.log("Login button clicked")
+            axios.post('api/login', this.form).then(res => {
+                this.$session.start()
+                this.$router.push('/home');
+            }).catch(err => {
+                console.log(err.response.data);
+            })
         }
     }
 }
