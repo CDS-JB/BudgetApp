@@ -42,7 +42,14 @@ export default {
 
     methods:{
         submit(){
-            console.log("Register button clicked")
+            axios.post('/api/register', form)
+                .then(res => {
+                    this.$session.start()
+                    this.$router.push('/home');
+                })
+                .catch(err => {
+                    console.log(err.response.data)
+                })
         }
     }
 }
