@@ -11,6 +11,9 @@ module.exports = (app) => {
     router.post('/api/login', (req, res) => {
         userController.login(app, req, res);
     });
+    router.post('/api/register', (req, res) => {
+        userController.addItem(app, req, res);
+    });
 
     router.get('/api/allusers', (req, res) => {
         userController.viewAll(app, req, res);
@@ -18,7 +21,7 @@ module.exports = (app) => {
     router.get('/api/user/:userID', (req, res) => {
         userController.viewItem(app, req, res);
     });
-    router.post('/api/api/user', (req, res) => {
+    router.post('/api/user', (req, res) => {
         userController.addItem(app, req, res);
     });
     router.put('/api/user', (req, res) => {

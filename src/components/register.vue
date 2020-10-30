@@ -42,14 +42,12 @@ export default {
 
     methods:{
         submit(){
-            axios.post('/api/register', form)
-                .then(res => {
-                    this.$session.start()
-                    this.$router.push('/home');
-                })
-                .catch(err => {
-                    console.log(err.response.data)
-                })
+            axios.post('api/register', this.form).then(res => {
+                this.$session.start()
+                this.$router.push('/home');
+            }).catch(err => {
+                console.log(err.response.data)
+            })
         }
     }
 }
