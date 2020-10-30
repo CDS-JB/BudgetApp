@@ -18,6 +18,22 @@ app.use(express.static("./public"));
 //   next();
 // })
 
+// sessions
+const session = require("express-session");
+// connect-mongo to store session in the db
+const MongoStore = require("connect-mongo")(session);
+
+app.use(
+    session({
+      secret: "budgetAppSessionSecret",
+      resave: true,
+      saveUninitialized: true,
+      store: new MongoStore({
+        url: "mongodb://localhost:27017/myTestSession"
+      })
+    })
+  );
+
 const routes = require('./routes/routes');
 app.use('/', routes(app))
 

@@ -1,8 +1,40 @@
 
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
+
 var ObjectId = require('mongodb').ObjectId; 
 
 module.exports = {
-
+    login: function (app, req, res) {
+        console.log("login entered")
+        let emailAddress = "emailAddress"//req.body.emailAddress;
+        let password = "password"//req.body.password;
+    
+        app
+        .set("myDb")
+        .collection("usersCollection")
+        .find({ emailAddress: emailAddress })
+        .toArray(function (err, docs) {
+        if (err) {
+          console.error(err);
+        }
+        if (docs.length > 0) {
+            bcrypt.compare(password, docs[0].password, function(err, result) {
+            console.info(result);
+            if (result == true) {
+              req.session.login = true;
+              
+              res.json({ msg: "found " +emailAddress  })
+              //res.redirect("/example");
+            }
+          });
+        } else {            
+            res.json({ msg: "Not Found" })
+          //res.redirect("/login");
+        }
+        
+      });
+    },
     viewAll: function (app, req, res) {
         console.info("View All controller")
         app.set('myDb').collection('usersCollection').find({}).toArray(function (err, docs) {

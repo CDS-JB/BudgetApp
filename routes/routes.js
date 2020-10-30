@@ -8,7 +8,9 @@ const transactionController = require('../controllers/transactioncontroller.js')
 console.dir(userController);
 
 module.exports = (app) => { 
-
+    router.post('/api/login', (req, res) => {
+        userController.login(app, req, res);
+    });
 
     router.get('/api/allusers', (req, res) => {
         userController.viewAll(app, req, res);
