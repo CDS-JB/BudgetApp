@@ -7,8 +7,9 @@ var ObjectId = require('mongodb').ObjectId;
 module.exports = {
     login: function (app, req, res) {
         console.log("login entered")
-        let emailAddress = "emailAddress"//req.body.emailAddress;
-        let password = "password"//req.body.password;
+       // console.log(req.body.username);
+        let emailAddress = req.body.username;
+        let password = req.body.password;
     
         app
         .set("myDb")
@@ -18,17 +19,22 @@ module.exports = {
         if (err) {
           console.error(err);
         }
-        if (docs.length > 0) {
-            bcrypt.compare(password, docs[0].password, function(err, result) {
-            console.info(result);
-            if (result == true) {
-              req.session.login = true;
-              
-              res.json({ msg: "found " +emailAddress  })
-              //res.redirect("/example");
-            }
-          });
-        } else {            
+        if (docs.length > 0) {            
+            console.log(emailAddress + " found")
+            bcrypt.compare(password, docs[0].password, function(err, result) 
+            {
+                console.info(result);
+                if (result == true) {
+                    req.session.login = true;                                  
+                    console.log("password correct")
+                    res.json({ msg: "found " +emailAddress  })
+                }
+                else {
+                    console.log("password incorect")
+                }
+            });
+        } else {                        
+            console.log(emailAddress + " not found")            
             res.json({ msg: "Not Found" })
           //res.redirect("/login");
         }
@@ -61,10 +67,22 @@ module.exports = {
     },
     addItem: function (app, req, res) {
         console.info("POST controller")
-        var newUser = req.body;
-        console.dir(newUser);
-        app.get('myDb').collection("usersCollection").insertOne(newUser,
-            function (err, dbResp) {
+        bcrypt.hash(req.body.password, saltRounds, function (err, hash) 
+        {
+            let hashedPwd = hash;
+            let newUser =   {
+                firstName: req.body.firstname, 
+                surname: req.body.lastname, 
+                dateOfBirth: req.body.dateofbirth, 
+                emailAddress: req.body.username,
+                password: hashedPwd
+            };
+            
+            console.dir(newUser);        
+            app
+            .get('myDb')
+            .collection("usersCollection")
+            .insertOne(newUser, function (err, dbResp) {
                 if (err) {
                     console.error(err)
                 }
@@ -75,6 +93,7 @@ module.exports = {
                     res.json({ msg: "Not Found" })
                 }
             })
+        })
     },
     amendItem: function (app, req, res) {
         console.info("PUT / UPDATE controller")
