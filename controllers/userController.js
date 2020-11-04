@@ -6,11 +6,8 @@ var ObjectId = require('mongodb').ObjectId;
 
 module.exports = {
     login: function (app, req, res) {
-        console.log("login entered")
-       // console.log(req.body.username);
         let emailAddress = req.body.username;
-        let password = req.body.password;
-    
+        let password = req.body.password;    
         app
         .set("myDb")
         .collection("usersCollection")
@@ -20,7 +17,6 @@ module.exports = {
           console.error(err);
         }
         if (docs.length > 0) {            
-            console.log(emailAddress + " found")
             bcrypt.compare(password, docs[0].password, function(err, result) 
             {
                 console.info(result);
