@@ -15,21 +15,21 @@ module.exports = (app) => {
         userController.addItem(app, req, res);
     });
 
-    router.get('/api/allusers', (req, res) => {
-        userController.viewAll(app, req, res);
-    });
-    router.get('/api/user/:userID', (req, res) => {
-        userController.viewItem(app, req, res);
-    });
-    router.post('/api/user', (req, res) => {
-        userController.addItem(app, req, res);
-    });
-    router.put('/api/user', (req, res) => {
-        userController.amendItem(app, req, res);
-    });
-    router.delete('/api/user', (req, res) => {
-        userController.deleteItem(app, req, res);
-    });
+    // router.get('/api/allusers', (req, res) => {
+    //     userController.viewAll(app, req, res);
+    // });
+    // router.get('/api/user/:userID', (req, res) => {
+    //     userController.viewItem(app, req, res);
+    // });
+    // router.post('/api/user', (req, res) => {
+    //     userController.addItem(app, req, res);
+    // });
+    // router.put('/api/user', (req, res) => {
+    //     userController.amendItem(app, req, res);
+    // });
+    // router.delete('/api/user', (req, res) => {
+    //     userController.deleteItem(app, req, res);
+    // });
 
 
     router.get('/api/alltransactions/', (req, res) => {
