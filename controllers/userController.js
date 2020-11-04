@@ -6,6 +6,7 @@ var ObjectId = require('mongodb').ObjectId;
 
 module.exports = {
     login: function (app, req, res) {
+        console.log("userController.login")
         let emailAddress = req.body.username;
         let password = req.body.password;    
         app
@@ -17,6 +18,7 @@ module.exports = {
           console.error(err);
         }
         if (docs.length > 0) {            
+            console.log("User found in database for " + emailAddress)           
             bcrypt.compare(password, docs[0].password, function(err, result) 
             {
                 console.info(result);
@@ -32,7 +34,7 @@ module.exports = {
             });
         }
         else {                        
-            console.log(emailAddress + " not found")            
+            console.log("User not found in database for " + emailAddress)             
             res.json({ statusCode: 400,  msg: "User Not Found" });            
         }        
       });
@@ -62,7 +64,7 @@ module.exports = {
     //     })
     // },
     addItem: function (app, req, res) {
-        console.info("POST controller")
+        console.info("userController.addItem")
         bcrypt.hash(req.body.password, saltRounds, function (err, hash) 
         {
             let hashedPwd = hash;
@@ -84,9 +86,12 @@ module.exports = {
                 }
                 if (dbResp.insertedCount === 1) {
                     res.json({ statusCode: 200, msg: "Successfully Added" + dbResp.insertedId })
+                    console.info( "Successfully Added" + dbResp.insertedId)
+                    
 
                 } else {
                     res.json({ statusCode: 400,msg: "Failed to add to db" })
+                    console.info("Failed to add to db")
                 }
             })
         })
