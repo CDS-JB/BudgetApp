@@ -27,18 +27,18 @@ module.exports = {
                 if (result == true) {
                     req.session.login = true;                                  
                     console.log("password correct")
-                    res.json({ msg: "found " +emailAddress  })
+                    res.json({ statusCode: 200, msg: "Found " + emailAddress  })
                 }
                 else {
                     console.log("password incorect")
+                    res.json({ statusCode: 400, msg: "Invalid Password" })
                 }
             });
-        } else {                        
-            console.log(emailAddress + " not found")            
-            res.json({ msg: "Not Found" })
-          //res.redirect("/login");
         }
-        
+        else {                        
+            console.log(emailAddress + " not found")            
+            res.json({ statusCode: 400,  msg: "User Not Found" });            
+        }        
       });
     },
     viewAll: function (app, req, res) {
@@ -87,10 +87,10 @@ module.exports = {
                     console.error(err)
                 }
                 if (dbResp.insertedCount === 1) {
-                    res.json({ msg: "Successfully Added" + dbResp.insertedId })
+                    res.json({ statusCode: 200, msg: "Successfully Added" + dbResp.insertedId })
 
                 } else {
-                    res.json({ msg: "Not Found" })
+                    res.json({ statusCode: 400,msg: "Failed to add to db" })
                 }
             })
         })
