@@ -4,10 +4,14 @@ const router = express.Router();
 
 const userController = require('../controllers/usercontroller.js');
 const transactionController = require('../controllers/transactioncontroller.js');
+const report = require('../controllers/report');
 
 console.dir(userController);
 
 module.exports = (app) => { 
+
+    router.get('/api/report', (req, res) => {report.show(app, req, res)})
+
     router.post('/api/login', (req, res) => {
         userController.login(app, req, res);
     });
