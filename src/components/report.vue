@@ -10,19 +10,19 @@
             <button ref="chartswap" type="button" class="btn" :class="showIncome ? 'btn-primary' : 'btn-outline-dark'" @click="showIncome = true">Income</button>
             <button ref="chartswap" type="button" class="btn" :class="showIncome ? 'btn-outline-dark' : 'btn-primary'" @click="showIncome = false">Expenses</button>
         </div>
-        <div>
-            <line-chart :chart-data="showIncome ? incomeLineChartData : expensesLineChartData" :chart-options="lineChartOptions"></line-chart>
+        <div style="max-width: 500px">
+            <line-time-chart :chart-data="showIncome ? incomeLineChartData : expensesLineChartData"></line-time-chart>
         </div>
     </div>
 </template>
 
 <script>
 import moment from 'moment';
-import line from '../charts/line';
+import lineTime from '../charts/line-time';
 
 export default {
     components: {
-        'line-chart': line
+        'line-time-chart': lineTime
     },
 
     data(){
@@ -41,6 +41,10 @@ export default {
                 datasets: [{
                     label: 'Income',
                     lineTension: 0,
+                    backgroundColor: 'rgba(10, 148, 35, 0.1)',
+                    borderColor: 'rgba(10, 148, 35, 0.5)',
+                    pointBackgroundColor: 'rgb(10, 148, 35)',
+                    pointBorderColor: 'rgb(10, 148, 35)',
                     data: []
                 }],
             },
@@ -49,18 +53,12 @@ export default {
                 datasets: [{
                     label: 'Expenses',
                     lineTension: 0,
+                    backgroundColor: 'rgba(184, 4, 4, 0.1)',
+                    borderColor: 'rgba(184, 4, 4, 0.5)',
+                    pointBackgroundColor: 'rgb(184, 4, 4)',
+                    pointBorderColor: 'rgb(184, 4, 4)',
                     data: []
                 }],
-            },
-            lineChartOptions: {
-                // bezierCurve: false,
-                scales: {
-                    xAxes: [{
-                        type: 'time',
-                        time: {unit: 'day'},
-                        distribution: 'linear'
-                    }]
-                }
             },
             showIncome: true
         }
@@ -75,15 +73,30 @@ export default {
         calcIncome(){
             var income = 0
             var data = Object.assign({}, this.incomeLineChartData)
+            var prevDate = 0
+            var totalAmount = 0
 
             this.transactions.filter(t => {
                 return t.Type == "Income"
             }).forEach(t => {
                 income += t.Amount
 
-                data.labels.push(moment(t.Date, 'YYYY-MM-DD'))
-                data.datasets[0].data.push({t: moment(t.Date, 'YYYY-MM-DD'), y: t.Amount})
+                var date = t.Date
+                if(prevDate !== date){
+                    if(prevDate !== 0){
+                        data.labels.push(moment(prevDate, 'YYYY-MM-DD'))
+                        data.datasets[0].data.push({t: moment(prevDate, 'YYYY-MM-DD'), y: totalAmount})
+                    }
+
+                    prevDate = date
+                    totalAmount = t.Amount
+                } else {
+                    totalAmount = totalAmount + t.Amount
+                }                
             })
+
+            data.labels.push(moment(prevDate, 'YYYY-MM-DD'))
+            data.datasets[0].data.push({t: moment(prevDate, 'YYYY-MM-DD'), y: totalAmount})
 
             this.display.income = this.round(income)
             this.incomeLineChartData = data
@@ -92,22 +105,30 @@ export default {
         calcExpenses(){
             var expenses = 0
             var data = Object.assign({}, this.expensesLineChartData)
-            var oldDate = 0;
+            var prevDate = 0
+            var totalAmount = 0
 
             this.transactions.filter(t => {
                 return t.Type == "Expense"
             }).forEach(t => {
                 expenses += t.Amount
 
-                if (oldDate == moment(t.Date, 'YYYY-MM-DD')){
-                    data.datasets[0].data.push({t: moment(t.Date, 'YYYY-MM-DD'), y: t.Amount})
+                var date = t.Date
+                if(prevDate !== date){
+                    if(prevDate !== 0){
+                        data.labels.push(moment(prevDate, 'YYYY-MM-DD'))
+                        data.datasets[0].data.push({t: moment(prevDate, 'YYYY-MM-DD'), y: totalAmount})
+                    }
+
+                    prevDate = date
+                    totalAmount = t.Amount
                 } else {
-                    oldDate = moment(t.Date, 'YYYY-MM-DD')
-                    data.labels.push(moment(t.Date, 'YYYY-MM-DD'))
-                    data.datasets[0].data.push({t: moment(t.Date, 'YYYY-MM-DD'), y: t.Amount})
-                }
-                
+                    totalAmount = totalAmount + t.Amount
+                }                
             })
+
+            data.labels.push(moment(prevDate, 'YYYY-MM-DD'))
+            data.datasets[0].data.push({t: moment(prevDate, 'YYYY-MM-DD'), y: totalAmount})
 
             this.display.expenses = this.round(expenses)
             this.expensesLineChartData = data
