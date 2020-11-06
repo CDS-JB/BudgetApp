@@ -24,6 +24,7 @@ module.exports = {
                 console.info(result);
                 if (result == true) {
                     req.session.login = true;                                  
+                    req.session.userId = docs[0]._id;                            
                     console.log("password correct")
                     res.json({ statusCode: 200, msg: "Found " + emailAddress  })
                 }
@@ -38,6 +39,11 @@ module.exports = {
             res.json({ statusCode: 400,  msg: "User Not Found" });            
         }        
       });
+    },
+    logout: function(app, req, res) {
+        req.backendSession.destroy(function(err) {
+            res.json({ statusCode: 200, msg: "Successfully logged out" })
+          });
     },
     // viewAll: function (app, req, res) {
     //     console.info("View All controller")
