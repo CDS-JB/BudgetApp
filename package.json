@@ -12,6 +12,7 @@
     "axios": "^0.20.0",
     "bcrypt": "^3.0.8",
     "bootstrap": "^4.5.2",
+    "chart.js": "^2.9.4",
     "connect-history-api-fallback": "^1.6.0",
     "connect-mongo": "^3.1.0",
     "cookie-parser": "^1.4.4",
@@ -22,6 +23,7 @@
     "mongodb": "^3.3.2",
     "nodemon": "^2.0.4",
     "save-dev": "0.0.1-security",
+    "vue-chartjs": "^3.5.1",
     "vue-session": "^1.0.0"
   },
   "devDependencies": {

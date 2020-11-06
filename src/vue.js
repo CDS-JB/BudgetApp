@@ -7,7 +7,7 @@ import VueSession from 'vue-session';
 // Import components for router
 import Welcome from './components/loginregister';
 import NotFound from './components/notFound';
-// import Report from './components/report';
+import Report from './components/report';
 import Login from './components/login';
 import Register from './components/register';
 import Home from './components/home';
@@ -31,7 +31,7 @@ const router = new VueRouter({
         {path: '/login', component: Login, meta: {title: 'Login'}},
         {path: '/register', component: Register, meta: {title: 'Register'}},
         {path: '/home', component: Home, meta: {title: 'Home'}},
-        // {path: '/report', component: Report, meta: {title: 'Report'}},
+        {path: '/report', component: Report, meta: {title: 'Report'}},
         {path: '*', component: NotFound, meta: {title: 'Not Found'}} // Render 404 page if url doesn't match other routes
     ]
 });
