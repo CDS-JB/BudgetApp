@@ -1,16 +1,71 @@
 <template>
-    <div>
-        <div>Current Balance: {{display.balance}}</div>
-        <div>
-            <div>Income: {{display.income}}</div>
-            <div>Expenses: {{display.expenses}}</div>
-            <div>Remaining: {{display.remaining}}</div>
+    <div class="page">
+        <div class="row">
+            <div class="shadow p-3 mb-5 bg-white rounded tabSmall col-md">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-1 iconAlign">
+                            <img src="/images/cash-stack.svg" alt="" width="40" height="40" title="Bootstrap">
+                        </div>
+                        <div class="col-2">
+                        </div>
+                        <div class="col-8">
+                            Balance: <h3>£{{display.balance}}</h3>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+            <div class="shadow p-3 mb-5 bg-white rounded tabSmall col-md">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-1 iconAlign">
+                            <img src="/images/wallet2.svg" alt="" width="40" height="40" title="Bootstrap">
+                        </div>
+                        <div class="col-2">
+                        </div>
+                        <div class="col-8">
+                            Remaining: <h3>£{{display.remaining}}</h3>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+            <div class="shadow p-3 mb-5 bg-white rounded tabSmall col-md">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-1 iconAlign">
+                            <img src="/images/graph-up.svg" alt="" width="40" height="40" title="Bootstrap">
+                        </div>
+                        <div class="col-2">
+                        </div>
+                        <div class="col-8">
+                            Income: <h3>£{{display.income}}</h3>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+            <div class="shadow p-3 mb-5 bg-white rounded tabSmall col-md">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-1 iconAlign">
+                            <img src="/images/graph-down.svg" alt="" width="40" height="40" title="Bootstrap">
+                        </div>
+                        <div class="col-2">
+                        </div>
+                        <div class="col-8">
+                            Expenses: <h3>£{{display.expenses}}</h3>
+                        </div>
+                    </div>
+                </div>    
+            </div>
         </div>
+        
+        
         <div>
-            <button ref="chartswap" type="button" class="btn" :class="showIncome ? 'btn-primary' : 'btn-outline-dark'" @click="showIncome = true">Income</button>
-            <button ref="chartswap" type="button" class="btn" :class="showIncome ? 'btn-outline-dark' : 'btn-primary'" @click="showIncome = false">Expenses</button>
+            <button ref="chartswap" type="button" class="btn" :class="showIncome ? 'btn-income' : 'btn-income'" @click="showIncome = true">Income</button>
+            <button ref="chartswap" type="button" class="btn" :class="showIncome ? 'btn-expense' : 'btn-expense'" @click="showIncome = false">Expenses</button>
         </div>
-        <div style="max-width: 500px">
+        <div class="shadow p-3 mb-5 bg-white rounded" style="max-width: 500px">
+            <h4>Chart Overview</h4>
             <line-time-chart :chart-data="showIncome ? incomeLineChartData : expensesLineChartData"></line-time-chart>
         </div>
     </div>
