@@ -16,7 +16,7 @@
             <div class="col-2"></div>
             <div class="col-8">
               <span style="color: grey">Balance:</span>
-              <h3>£{{ display.balance }}</h3>
+              <h3>&#163;{{ display.balance }}</h3>
             </div>
           </div>
         </div>
@@ -36,7 +36,7 @@
             <div class="col-2"></div>
             <div class="col-8">
               <span style="color: grey">Remaining:</span>
-              <h3>£{{ display.remaining }}</h3>
+              <h3>&#163;{{ display.remaining }}</h3>
             </div>
           </div>
         </div>
@@ -56,7 +56,7 @@
             <div class="col-2"></div>
             <div class="col-8">
               <span style="color: grey">Income:</span>
-              <h3>£{{ display.income }}</h3>
+              <h3>&#163;{{ display.income }}</h3>
             </div>
           </div>
         </div>
@@ -76,7 +76,7 @@
             <div class="col-2"></div>
             <div class="col-8">
               <span style="color: grey">Expenses:</span>
-              <h3>£{{ display.expenses }}</h3>
+              <h3>&#163;{{ display.expenses }}</h3>
             </div>
           </div>
         </div>
