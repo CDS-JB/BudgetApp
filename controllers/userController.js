@@ -1,44 +1,55 @@
 
+
+var  userModel = require('../models/user.js');
+
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
 var ObjectId = require('mongodb').ObjectId; 
-
 module.exports = {
-    login: function (app, req, res) {
+     login: async function (app, req, res) {
         console.log("userController.login")
         let emailAddress = req.body.username;
-        let password = req.body.password;    
-        app
-        .set("myDb")
-        .collection("usersCollection")
-        .find({ emailAddress: emailAddress })
-        .toArray(function (err, docs) {
-        if (err) {
-          console.error(err);
-        }
-        if (docs.length > 0) {            
-            console.log("User found in database for " + emailAddress)           
-            bcrypt.compare(password, docs[0].password, function(err, result) 
-            {
-                console.info(result);
-                if (result == true) {
-                    req.session.login = true;                                  
-                    req.session.userId = docs[0]._id;                            
-                    console.log("password correct")
-                    res.json({ statusCode: 200, msg: "Found " + emailAddress  })
-                }
-                else {
-                    console.log("password incorect")
-                    res.json({ statusCode: 400, msg: "Invalid Password" })
-                }
-            });
-        }
-        else {                        
-            console.log("User not found in database for " + emailAddress)             
-            res.json({ statusCode: 400,  msg: "User Not Found" });            
-        }        
-      });
+        let password = req.body.password;   
+ 
+        result = await userModel.login(app, emailAddress, password, req.session);          
+        console.dir(result);
+        res.json(result);
+       
+        //let users = userModel.getUsers(app) ;
+
+      //  console.log("controller users: " + users);
+        //console.dir(res);
+        // app
+        // .set("myDb")
+        // .collection("usersCollection")
+        // .find({ emailAddress: emailAddress })
+        // .toArray(function (err, docs) {
+        // if (err) {
+        //   console.error(err);
+        // }
+        // if (docs.length > 0) {            
+        //     console.log("User found in database for " + emailAddress)           
+        //     bcrypt.compare(password, docs[0].password, function(err, result) 
+        //     {
+        //         console.info(result);
+        //         if (result == true) {
+        //             req.session.login = true;                                  
+        //             req.session.userId = docs[0]._id;                            
+        //             console.log("password correct")
+        //             res.json({ statusCode: 200, msg: "Found " + emailAddress  })
+        //         }
+        //         else {
+        //             console.log("password incorect")
+        //             res.json({ statusCode: 400, msg: "Invalid Password" })
+        //         }
+        //     });
+        // }
+        // else {                        
+        //     console.log("User not found in database for " + emailAddress)             
+        //     res.json({ statusCode: 400,  msg: "User Not Found" });            
+        // }        
+      //});
     },
     logout: function(app, req, res) {
         req.backendSession.destroy(function(err) {
@@ -83,25 +94,11 @@ module.exports = {
             };
             
             console.dir(newUser);        
-            app
-            .get('myDb')
-            .collection("usersCollection")
-            .insertOne(newUser, function (err, dbResp) {
-                if (err) {
-                    console.error(err)
-                }
-                if (dbResp.insertedCount === 1) {
-                    res.json({ statusCode: 200, msg: "Successfully Added" + dbResp.insertedId })
-                    console.info( "Successfully Added" + dbResp.insertedId)
-                    
+            
+            userModel.addUser(app,newUser, res);
 
-                } else {
-                    res.json({ statusCode: 400,msg: "Failed to add to db" })
-                    console.info("Failed to add to db")
-                }
-            })
         })
-    },
+    }
     // amendItem: function (app, req, res) {
     //     console.info("PUT / UPDATE controller")
     //     var amendUser = req.body;
