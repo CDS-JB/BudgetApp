@@ -31,7 +31,9 @@ module.exports = {
 
 
     amendItem: async function (app, req, res) {
-        result = updateUser()
+        let amendedUser = userModel.createUserFromRequest(req);
+        result = await updateUser(app, amendedUser, req.session.userId)
+        res.json = result;
     },
     // deleteItem: function (app, req, res) {
     //     console.info("DELETE controller")
