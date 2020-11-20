@@ -1,9 +1,5 @@
 var  userModel = require('../models/user.js');
 
-const bcrypt = require("bcrypt");
-const saltRounds = 10;
-
-var ObjectId = require('mongodb').ObjectId; 
 module.exports = {
      login: async function (app, req, res) {
         console.log("userController.login")
@@ -16,19 +12,16 @@ module.exports = {
     },
 
     logout: function(app, req, res) {
-        req.backendSession.destroy(function(err) {
+        req.session.destroy(function(err) {
             res.json({ statusCode: 200, msg: "Successfully logged out" })
-          });
+        });
     },
 
     addItem: async function (app, req, res) {        
-        let newUser =  userModel.createUserFromRequest(req);
-                                
+        let newUser =  userModel.createUserFromRequest(req);                                
         result = await userModel.addUser(app,newUser, res);
         res.json = result;   
-        console.dir(result)   ;
     },
-
 
     amendItem: async function (app, req, res) {
         let amendedUser = userModel.createUserFromRequest(req);
