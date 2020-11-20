@@ -5,7 +5,7 @@ import VueRouter from 'vue-router';
 import VueSession from 'vue-session';
 
 // Import components for router
-import Welcome from './components/loginregister';
+import Welcome from './components/welcome';
 import NotFound from './components/notFound';
 import Report from './components/report';
 import Login from './components/login';
