@@ -46,7 +46,7 @@ function addUser(app,newUser)  {
 
             app
             .get('myDb')
-            .collection("usersCollection")
+            .collection("User")
             .insertOne(newUser, function (err, dbResp) {
                 if (err) {
                     console.error(err);
@@ -68,7 +68,7 @@ function updateUser(app, userInfo, userId) {
         console.info("PUT / UPDATE controller")
         var o_id = new ObjectId(userId);
         console.info(o_id);
-        app.get('myDb').collection("usersCollection").updateOne(
+        app.get('myDb').collection("User").updateOne(
             { _id: o_id },
             { $set : userInfo},
             function (err, dbResp) {
@@ -89,22 +89,22 @@ function createUserFromRequest(req)
     let newUser = {};
 
     if (req.body.firstname != null)
-        newUser.firstName = req.body.firstname;
+        newUser.firstName = req.body.FirstNm;
         
     if (req.body.lastname != null) 
-        newUser.lastname = req.body.lastname;
+        newUser.lastname = req.body.LastNm;
 
     if (req.body.dateOfBirth != null)
-        newUser.dateOfBirth = req.body.dateOfBirth;
+        newUser.dateOfBirth = req.body.DOB;
 
     if (req.body.username != null)
-        newUser.emailAddress = req.body.username;
+        newUser.emailAddress = req.body.Email;
 
     if (req.body.password != null)
-        newUser.password = req.body.password;
+        newUser.password = req.body.Password;
 
     if (req.body.budgetTargetDate != null)
-        newUser.budgetTargetDate = req.body.budgetTargetDate;
+        newUser.budgetTargetDate = req.body.BudgetTargetDate;
 
     if (req.body.MonthlyBudget != null)
         newUser.MonthlyBudget = req.body.MonthlyBudget;

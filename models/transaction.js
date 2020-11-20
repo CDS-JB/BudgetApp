@@ -33,7 +33,7 @@ function addTransaction(app, newTransaction)  {
     return new Promise (resolve =>  {
         app
         .get('myDb')
-        .collection("transactionCollection")
+        .collection("Transaction")
         .insertOne(newTransaction, function (err, dbResp) {
             if (err) {
                 console.error(err);
@@ -54,7 +54,7 @@ async function getTransactionsForUser(app, userId)
     return new Promise (resolve =>  {        
         app
         .set("myDb")
-        .collection("transactionCollection")
+        .collection("Transaction")
         .find({ UserObjectId: userId })
         .toArray(function (err, transactions) {
             if (err) {

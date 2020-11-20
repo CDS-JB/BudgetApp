@@ -36,7 +36,7 @@ function addPayment(app, newPayment)  {
     return new Promise (resolve =>  {
         app
         .get('myDb')
-        .collection("paymentCollection")
+        .collection("Payment")
         .insertOne(newPayment, function (err, dbResp) {
             if (err) {
                 console.error(err);
@@ -57,7 +57,7 @@ async function getPaymentsForUser(app, userId)
     return new Promise (resolve =>  {        
         app
         .set("myDb")
-        .collection("paymentCollection")
+        .collection("Payment")
         .find({ UserObjectId: userId })
         .toArray(function (err, payments) {
             if (err) {
