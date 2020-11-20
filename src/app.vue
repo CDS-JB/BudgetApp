@@ -17,7 +17,7 @@
                         <li class="nav-item"><a class="nav-link" href="/budget">Budget</a></li>
                         <li class="nav-item"><a class="nav-link" href="/settings">Settings</a></li>
                         <li class="nav-item"><a class="nav-link" href="/about-us">About Us</a></li>
-                        <li class="nav-item"><a class="nav-link" @click="logout">Logout</a></li>
+                        <li class="nav-item"><a class="nav-link" href="" @click="logout">Logout</a></li>
                     </ul>
                 </div>
             </nav>
