@@ -86,13 +86,32 @@ function updateUser(app, userInfo, userId) {
 }
 function createUserFromRequest(req)
 {
-    let newUser =   {
-        firstName: req.body.firstname, 
-        surname: req.body.lastname,
-        dateOfBirth : req.body.dateOfBirth, 
-        emailAddress: req.body.username,
-        password: req.body.password
-      };
+    let newUser = {};
+
+    if (req.body.firstname != null)
+        newUser.firstName = req.body.firstname;
+        
+    if (req.body.lastname != null) 
+        newUser.lastname = req.body.lastname;
+
+    if (req.body.dateOfBirth != null)
+        newUser.dateOfBirth = req.body.dateOfBirth;
+
+    if (req.body.username != null)
+        newUser.emailAddress = req.body.username;
+
+    if (req.body.password != null)
+        newUser.password = req.body.password;
+
+    if (req.body.budgetTargetDate != null)
+        newUser.budgetTargetDate = req.body.budgetTargetDate;
+
+    if (req.body.MonthlyBudget != null)
+        newUser.MonthlyBudget = req.body.MonthlyBudget;
+
+    if (req.body.WeeklyBudget != null)
+        newUser.WeeklyBudget = req.body.WeeklyBudget;
+
       return newUser;
 }
    
