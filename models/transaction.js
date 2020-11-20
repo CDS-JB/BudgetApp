@@ -72,6 +72,12 @@ async function getTransactionsForUser(app, userId)
     });   
 }
 
+
+function filterTransactionsByDateRange(transactions, startDate, endDate)
+{
+    return transactions.filter(transaction => transaction.TransactionDate > startDate && transaction.TransactionDate < endDate)
+}
+
 module.exports.createTransactionFromRequest = createTransactionFromRequest;
 module.exports.addTransaction = addTransaction;
 module.exports.getTransactionsForUser = getTransactionsForUser;

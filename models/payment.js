@@ -75,6 +75,15 @@ async function getPaymentsForUser(app, userId)
     });   
 }
 
+function filterPaymentsByType(payments, type){
+    return payments.filter(payment => payment.PaymentType == type);
+}
+
+function filterPaymentsByFrequency(payments, frequency){
+    return payments.filter(payment => payment.FrequencyType == frequency);
+}
+
+
 
 module.exports.createTransactionFromRequest = createTransactionFromRequest;
 module.exports.addPayment = addPayment;
