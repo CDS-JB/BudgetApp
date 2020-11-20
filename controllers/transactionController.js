@@ -13,37 +13,73 @@ module.exports = {
             res.json(docs)
         })
     },
-    viewAllForUser: function (app, req, res) {
+    viewAllForUser: function (app, req, res) {        
         console.info("Transactions controller - View all transactions for user")
-        let userID = req.params.userID;
-        app.set('myDb').collection('transactionsCollection').find({"userID": userID}).toArray(function (err, docs) {
-            if (err) {
-                console.error(err)
-            }
-            console.dir(docs);
-            res.json(docs)
-        })
+        if (!req.session.login) 
+        {
+            res.json({ statusCode: 400, msg: "User not logged in"  })
+        }
+        else if (req.session.userId == null)
+        {
+            res.json({ statusCode: 400, msg: "No user ID stored in session"  })
+        }
+        else {
+            app.set('myDb').collection('transactionsCollection').find({"userID": req.session.userId}).toArray(function (err, docs) {
+                if (err) {
+                    console.error(err)
+                }
+                if (docs.length > 0){
+                    console.dir(docs);
+                    res.json({statusCode: 200, msg: "Transactions found for user", transactions: docs})
+                }
+                else {
+                    res.json({ statusCode: 400, msg: "No transactions found for this user"  })
+                }
+            })}
     },
     viewIncomingsForUser: function (app, req, res) {
         console.info("Transactions controller - View all incoming transactions for user")
-        let userID = req.params.userID;
-        app.set('myDb').collection('transactionsCollection').find({"transactionType": "incoming","userID": userID}).toArray(function(err, docs) {
-            if (err) {
-                console.error(err)
-            }
-            console.dir(docs);
-            return res.json(docs)
-        })
+        if (!req.session.login) {
+            res.json({ statusCode: 400, msg: "User not logged in"  })
+        }
+        else if (req.session.userId == null) {
+            res.json({ statusCode: 400, msg: "No user ID stored in session"  })
+        }
+        else {
+            app.set('myDb').collection('transactionsCollection').find({"transactionType": "incoming","userID": req.session.userId}).toArray(function(err, docs){            
+                if (err) {
+                    console.error(err)
+                }
+                if (docs.length > 0){
+                    console.dir(docs);
+                    res.json({statusCode: 200, msg: "Incoming Transactions found for user", transactions: docs})
+                }
+                else {
+                    res.json({ statusCode: 400, msg: "No incoming transactions found for this user"  })
+                }
+            })}
     },
     viewOutgoingsForUser: function (app, req, res) {
         console.info("Transactions controller - View all outgoing transactions for user")
-        app.set('myDb').collection('transactionsCollection').find({"transactionType": "outgoing","userID": userID}).toArray(function(err, docs) {
-            if (err) {
-                console.error(err)
-            }
-            console.dir(docs);
-            return res.json(docs)
-        })
+        if (!req.session.login) {
+            res.json({ statusCode: 400, msg: "User not logged in"  })
+        }
+        else if (req.session.userId == null) {
+            res.json({ statusCode: 400, msg: "No user ID stored in session"  })
+        }
+        else {
+            app.set('myDb').collection('transactionsCollection').find({"transactionType": "outgoing","userID": req.session.userId}).toArray(function(err, docs){            
+                if (err) {
+                    console.error(err)
+                }
+                if (docs.length > 0){
+                    console.dir(docs);
+                    res.json({statusCode: 200, msg: "Outgoing Transactions found for user", transactions: docs})
+                }
+                else {
+                    res.json({ statusCode: 400, msg: "No outgoing transactions found for this user"  })
+                }
+            })}
     },
     viewItem: function (app, req, res) {
         console.info("Transactions controller - View one transaction")
