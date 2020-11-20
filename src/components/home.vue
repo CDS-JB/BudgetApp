@@ -8,11 +8,8 @@
 export default {
     beforeCreate: function () {
         if (!this.$session.exists()){
-            console.log('session does not exist')
+            console.error('Unauthenticated. Redirecting to Welcome')
             this.$router.push('/')
-        }
-        else{
-            console.log('session exists')
         }
     },
 
