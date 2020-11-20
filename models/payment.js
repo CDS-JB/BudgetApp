@@ -52,6 +52,30 @@ function addPayment(app, newPayment)  {
     });
 }
 
+async function getPaymentsForUser(app, userId)
+{
+    return new Promise (resolve =>  {        
+        app
+        .set("myDb")
+        .collection("paymentCollection")
+        .find({ UserObjectId: userId })
+        .toArray(function (err, payments) {
+            if (err) {
+                console.error(err);               
+            }
+            if(payments.length >0 ){
+                console.log(payments.length + " payments found for " + userId); 
+                resolve({statusCode: 200, payments: payments, msg: "Payments found for user"});
+            }
+            else {
+                console.log("No payments found for " + userId);             
+                resolve({ statusCode: 400,  msg: "No payments found" });   
+            } 
+        });
+    });   
+}
+
 
 module.exports.createTransactionFromRequest = createTransactionFromRequest;
 module.exports.addPayment = addPayment;
+module.exports.getPaymentsForUser = getPaymentsForUser;

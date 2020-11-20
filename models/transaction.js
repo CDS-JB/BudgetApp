@@ -49,7 +49,30 @@ function addTransaction(app, newTransaction)  {
     });
 }
 
+async function getTransactionsForUser(app, userId)
+{
+    return new Promise (resolve =>  {        
+        app
+        .set("myDb")
+        .collection("transactionCollection")
+        .find({ UserObjectId: userId })
+        .toArray(function (err, transactions) {
+            if (err) {
+                console.error(err);               
+            }
+            if(transactions.length >0 ){
+                console.log(transactions.length + " transactions found for " + userId); 
+                resolve({statusCode: 200, transactions: transactions, msg: "Transactions found for user"});
+            }
+            else {
+                console.log("No Transactions found for " + userId);             
+                resolve({ statusCode: 400,  msg: "No Transactions found" });   
+            } 
+        });
+    });   
+}
 
 module.exports.createTransactionFromRequest = createTransactionFromRequest;
 module.exports.addTransaction = addTransaction;
+module.exports.getTransactionsForUser = getTransactionsForUser;
 //module.exports.updatePayment = updatePayment;
