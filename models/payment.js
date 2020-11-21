@@ -1,4 +1,4 @@
-function createTransactionFromRequest(req)
+function createPaymentFromRequest(req)
 {
     let newPayment = {};
 
@@ -85,6 +85,6 @@ function filterPaymentsByFrequency(payments, frequency){
 
 
 
-module.exports.createTransactionFromRequest = createTransactionFromRequest;
+module.exports.createPaymentFromRequest = createPaymentFromRequest;
 module.exports.addPayment = addPayment;
 module.exports.getPaymentsForUser = getPaymentsForUser;

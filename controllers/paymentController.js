@@ -8,7 +8,7 @@ module.exports = {
 
     addItem: async function(app, req, res){
         let payment = paymentModel.createPaymentFromRequest(req);
-        res = await paymentModel.addPaymend(app, payment, res)
+        res = await paymentModel.addPayment(app, payment, res)
     } 
     
     
