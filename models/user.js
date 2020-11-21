@@ -1,7 +1,9 @@
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
-async function login(app, emailAddress, password, session)
+//var ObjectId = require('mongodb').ObjectId; 
+
+async function login(app, emailAddress, password, session, res)
 {
     return new Promise (resolve =>  {        
         app
@@ -19,25 +21,25 @@ async function login(app, emailAddress, password, session)
                         session.login = true;                                  
                         session.userId = user._id;                            
                         console.log("password correct");
-                        resolve({ statusCode: 200, msg: "Found " + user.emailAddress  });
+                        resolve(res.statusCode(200).json({ msg: "Found " + user.emailAddress  }));
                     }
                     else {
                         console.log("password incorect");
-                        resolve({ statusCode: 400, msg: "Invalid Password" });
+                        resolve(res.statusCode(400).json({  msg: "Invalid Password" }));
                     }
                 });
             }
             else {
                 console.log("User not found in database for " + emailAddress);             
-                resolve({ statusCode: 400,  msg: "User Not Found" });   
+                resolve(res.statusCode(400).json({  msg: "User Not Found" }));   
             } 
         });
     });   
 }
 
-function addUser(app,newUser)  {     
+function addUser(app,newUser, res)  {     
     return new Promise (resolve =>  {
-        bcrypt.hash(newUser.password, saltRounds, function (err, hash) 
+        bcrypt.hash(newUser.password, saltRounds, function (err, hash, res) 
         {
             let hashedPwd = hash;
             console.log(newUser.password);
@@ -53,17 +55,17 @@ function addUser(app,newUser)  {
                 }
                 if (dbResp.insertedCount === 1) {
                     console.info( "Successfully Added" + dbResp.insertedId);
-                    resolve ({ statusCode: 200, msg: "Successfully Added user" });               
+                    resolve(res.statusCode(200).json({msg: "Successfully Added user" }));               
                 } else {
                     console.log("Failed to add to db");
-                    resolve({ statusCode: 400,msg: "Failed to add to db" });                
+                    resolve(res.statusCode(400).json({ msg: "Failed to add to db" }));                
                 }
             });
         }); 
     });
 }
 
-function updateUser(app, userInfo, userId) {   
+function updateUser(app, userInfo, userId, res) {   
     return new Promise (resolve =>  {
         console.info("PUT / UPDATE controller")
         var o_id = new ObjectId(userId);
@@ -76,9 +78,9 @@ function updateUser(app, userInfo, userId) {
                     console.error(err)
                 }
                 if (dbResp.modifiedCount === 1) {
-                    resolve({ msg: "Successfully Amended" })
+                    resolve(res.statusCode(200).json({ msg: "Successfully Amended" }));
                 } else {
-                    resolve({ msg: "Not Found" })
+                    resolve(res.statusCode(400).json({ msg: "Not Found" }));
                 }
             }
         );        

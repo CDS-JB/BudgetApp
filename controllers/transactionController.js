@@ -1,4 +1,4 @@
-
+var transactionModel = require('../models/transaction.js');
 
 var ObjectId = require('mongodb').ObjectId; 
 

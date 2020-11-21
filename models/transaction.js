@@ -29,7 +29,7 @@ function createTransactionFromRequest(req)
       return newTransaction;
 }
 
-function addTransaction(app, newTransaction)  {     
+function addTransaction(app, newTransaction, res)  {     
     return new Promise (resolve =>  {
         app
         .get('myDb')
@@ -40,16 +40,16 @@ function addTransaction(app, newTransaction)  {
             }
             if (dbResp.insertedCount === 1) {
                 console.info( "Successfully Added" + dbResp.insertedId);
-                resolve ({ statusCode: 200, msg: "Successfully added payment" });               
+                resolve (res.statusCode(200).json({ msg: "Successfully added payment" }));               
             } else {
                 console.log("Failed to add to db");
-                resolve({ statusCode: 400,msg: "Failed to add to db" });                
+                resolve(res.statusCode(400).json({ msg: "Failed to add to db" }));                
             }            
         }); 
     });
 }
 
-async function getTransactionsForUser(app, userId)
+async function getTransactionsForUser(app, userId, res)
 {
     return new Promise (resolve =>  {        
         app
@@ -62,11 +62,11 @@ async function getTransactionsForUser(app, userId)
             }
             if(transactions.length >0 ){
                 console.log(transactions.length + " transactions found for " + userId); 
-                resolve({statusCode: 200, transactions: transactions, msg: "Transactions found for user"});
+                resolve(res.statusCode(200).json({transactions: transactions, msg: "Transactions found for user"}));
             }
             else {
                 console.log("No Transactions found for " + userId);             
-                resolve({ statusCode: 400,  msg: "No Transactions found" });   
+                resolve(res.statusCode(200).json({  msg: "No Transactions found" }));   
             } 
         });
     });   

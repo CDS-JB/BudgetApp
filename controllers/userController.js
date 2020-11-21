@@ -5,10 +5,7 @@ module.exports = {
         console.log("userController.login")
         let emailAddress = req.body.username;
         let password = req.body.password;    
-        result = await userModel.login(app, emailAddress, password, req.session);          
-        
-        res.json(result); 
-        console.dir(result);
+        res = await userModel.login(app, emailAddress, password, req.session);
     },
 
     logout: function(app, req, res) {
@@ -19,14 +16,12 @@ module.exports = {
 
     addItem: async function (app, req, res) {        
         let newUser =  userModel.createUserFromRequest(req);                                
-        result = await userModel.addUser(app,newUser, res);
-        res.json = result;   
+        res = await userModel.addUser(app,newUser, res);
     },
 
     amendItem: async function (app, req, res) {
         let amendedUser = userModel.createUserFromRequest(req);
-        result = await updateUser(app, amendedUser, req.session.userId)
-        res.json = result;
+        res = await updateUser(app, amendedUser, req.session.userId);
     },
     // deleteItem: function (app, req, res) {
     //     console.info("DELETE controller")
