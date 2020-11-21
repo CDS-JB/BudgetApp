@@ -4,6 +4,7 @@ const router = express.Router();
 
 const userController = require('../controllers/usercontroller.js');
 const transactionController = require('../controllers/transactioncontroller.js');
+const paymentController = require('../controllers/paymentcontroller.js');
 const report = require('../controllers/report');
 
 console.dir(userController);
@@ -17,6 +18,25 @@ module.exports = (app) => {
     });
     router.post('/api/register', (req, res) => {
         userController.addItem(app, req, res);
+    });
+
+
+
+    router.get('/api/transactions', (req, res) => {
+        transactionController.viewAllForUser(app, req, res);
+    });
+
+    router.put('/api/addtransaction', (req, res) => {
+        transactionController.addItem(app, req, res);
+    });
+
+    
+    router.get('/api/payments', (req, res) => {
+        paymentController.viewAllForUser(app, req, res);
+    });
+
+    router.put('/api/addpayment', (req, res) => {
+        paymentController.addItem(app, req, res);
     });
 
     // router.get('/api/allusers', (req, res) => {
@@ -36,30 +56,30 @@ module.exports = (app) => {
     // });
 
 
-    router.get('/api/alltransactions/', (req, res) => {
-        transactionController.viewAll(app, req, res);
-    });
-    router.get('/api/alltransactions/:userID', (req, res) => {
-        transactionController.viewAllForUser(app, req, res);
-    });
-    router.get('/api/incomings/:userID', (req, res) => {
-        transactionController.viewIncomingsForUser(app, req, res);
-    });
-    router.get('/api/outgoings/:userID', (req, res) => {
-        transactionController.viewOutgoingsForUser(app, req, res);
-    });
-    router.get('/api/transaction/:transactionID', (req, res) => {
-        transactionController.viewItem(app, req, res);
-    });
-    router.post('/api/transaction', (req, res) => {
-        transactionController.addItem(app, req, res);
-    });
-    router.put('/api/transaction', (req, res) => {
-        transactionController.amendItem(app, req, res);
-    });
-    router.delete('/api/transaction', (req, res) => {
-        transactionController.deleteItem(app, req, res);
-    });
+    // router.get('/api/alltransactions/', (req, res) => {
+    //     transactionController.viewAll(app, req, res);
+    // });
+    // router.get('/api/alltransactions/:userID', (req, res) => {
+    //     transactionController.viewAllForUser(app, req, res);
+    // });
+    // router.get('/api/incomings/:userID', (req, res) => {
+    //     transactionController.viewIncomingsForUser(app, req, res);
+    // });
+    // router.get('/api/outgoings/:userID', (req, res) => {
+    //     transactionController.viewOutgoingsForUser(app, req, res);
+    // });
+    // router.get('/api/transaction/:transactionID', (req, res) => {
+    //     transactionController.viewItem(app, req, res);
+    // });
+    // router.post('/api/transaction', (req, res) => {
+    //     transactionController.addItem(app, req, res);
+    // });
+    // router.put('/api/transaction', (req, res) => {
+    //     transactionController.amendItem(app, req, res);
+    // });
+    // router.delete('/api/transaction', (req, res) => {
+    //     transactionController.deleteItem(app, req, res);
+    // });
 
   
     return router;
