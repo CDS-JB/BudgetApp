@@ -1,6 +1,6 @@
 <template>
     <div>
-        You are signed in! <button type="button" class="btn btn-outline-dark" @click="logout">Log Out</button>
+
     </div>
 </template>
 
@@ -8,17 +8,7 @@
 export default {
     beforeCreate: function () {
         if (!this.$session.exists()){
-            console.log('session does not exist')
-            this.$router.push('/')
-        }
-        else{
-            console.log('session exists')
-        }
-    },
-
-    methods: {
-        logout(){
-            this.$session.destroy()
+            console.error('Unauthenticated. Redirecting to Welcome')
             this.$router.push('/')
         }
     }
