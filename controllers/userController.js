@@ -5,28 +5,26 @@ module.exports = {
         console.log("userController.login")
         let emailAddress = req.body.username;
         let password = req.body.password;    
-        result = await userModel.login(app, emailAddress, password, req.session);          
-        
-        res.json(result); 
-        console.dir(result);
+        res = await userModel.login(app, emailAddress, password, req.session,res);          
+        return res;
     },
 
     logout: function(app, req, res) {
         req.session.destroy(function(err) {
-            res.json({ statusCode: 200, msg: "Successfully logged out" })
+            res.status(200).json({ msg: "Successfully logged out" })
         });
     },
 
     addItem: async function (app, req, res) {        
         let newUser =  userModel.createUserFromRequest(req);                                
-        result = await userModel.addUser(app,newUser, res);
-        res.json = result;   
+        res = await userModel.addUser(app,newUser, res);
+        return res;
     },
 
     amendItem: async function (app, req, res) {
         let amendedUser = userModel.createUserFromRequest(req);
-        result = await updateUser(app, amendedUser, req.session.userId)
-        res.json = result;
+        res = await updateUser(app, amendedUser, req.session.userId, res)
+        return res;
     },
     // deleteItem: function (app, req, res) {
     //     console.info("DELETE controller")
