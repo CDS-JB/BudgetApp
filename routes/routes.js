@@ -22,6 +22,9 @@ module.exports = (app) => {
     })
     router.put('/api/register', (req, res) => {
         userController.addItem(app, req, res);
+    });    
+    router.put('/api/updateuser', (req, res) => {
+        userController.amendItem(app, req, res);
     });
     router.delete('/api/unregister', (req, res) => {
         userController.deleteItem(app, req, res);
@@ -34,6 +37,12 @@ module.exports = (app) => {
     });
     router.put('/api/addtransaction', (req, res) => {
         transactionController.addItem(app, req, res);
+    });  
+    router.put('/api/updatetransaction', (req, res) => {
+        transactionController.amendItem(app, req, res);
+    });
+    router.delete('/api/removetransaction', (req, res) => {
+        transactionController.deleteItem(app, req, res);
     });
 
     
@@ -43,6 +52,12 @@ module.exports = (app) => {
 
     router.put('/api/addpayment', (req, res) => {
         paymentController.addItem(app, req, res);
+    });
+    router.put('/api/updatepayment', (req, res) => {
+        transactionController.amendItem(app, req, res);
+    });
+    router.delete('/api/removepayment', (req, res) => {
+        transactionController.deleteItem(app, req, res);
     });
 
     return router;

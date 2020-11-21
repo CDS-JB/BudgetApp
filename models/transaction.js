@@ -73,6 +73,50 @@ async function getTransactionsForUser(app, userId)
 }
 
 
+function updateTransaction(app, transactionInfo, transactionId, res) {   
+    return new Promise (resolve =>  {
+        var transactionObjectId = new ObjectId(transactionId);
+        app.get('myDb')
+        .collection("Transaction")
+        .updateOne(
+            { _id: transactionObjectId },
+            { $set : transactionInfo},
+            function (err, dbResp) {
+                if (err) {
+                    console.error(err)
+                }
+                if (dbResp.modifiedCount === 1) {
+                    resolve(res.status(200).json({ msg: "Successfully Amended" }));
+                } else {
+                    resolve(res.status(400).json({ msg: "Not Found" }));
+                }
+            }
+        );        
+    });
+}
+
+function deleteTransaction(app, transactionId, res){      
+    return new Promise (resolve =>  {
+        var transactionObjectId = new ObjectId(transactionId);
+        app
+        .get('myDb')
+        .collection("Transacion")
+        .deleteOne(
+            { _id: transactionObjectId },
+            function (err, dbResp) {
+                if (err) {
+                    console.error(err)
+                }
+                if (dbResp.deletedCount === 1) {
+                    resolve(res.status(200).json({ msg: "Successfully Removed" }));
+                } else {
+                    resolve(res.status(400).json({ msg: "Not Found" }));
+                }
+        })
+    })
+}
+
+
 function filterTransactionsByDateRange(transactions, startDate, endDate)
 {
     return transactions.filter(transaction => transaction.TransactionDate > startDate && transaction.TransactionDate < endDate)
@@ -80,5 +124,6 @@ function filterTransactionsByDateRange(transactions, startDate, endDate)
 
 module.exports.createTransactionFromRequest = createTransactionFromRequest;
 module.exports.addTransaction = addTransaction;
+module.exports.updateTransaction = updateTransaction;
+module.exports.deleteTransaction = deleteTransaction;
 module.exports.getTransactionsForUser = getTransactionsForUser;
-//module.exports.updatePayment = updatePayment;

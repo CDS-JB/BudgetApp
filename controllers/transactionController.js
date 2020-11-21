@@ -11,6 +11,17 @@ module.exports = {
         res = await transactionModel.addTransaction(app, newTransaction, res);
     },
 
+    amendItem: async function (app, req, res) {
+        let amendedTransaction = transactionModel.createUserFromRequest(req);
+        res = await transactionModel.updateTransaction(app, amendedTransaction, req.body.transactionId, res)
+        return res;
+    },
+
+    deleteItem: async function (app, req, res) {
+        res = await transactionModel.deleteTransaction(app, rreq.body.transactionId, res);
+        return res;
+    },
+
 
     // viewAll: function (app, req, res) {
     //     console.info("Transactions controller - View all transactions")

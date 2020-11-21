@@ -1,3 +1,5 @@
+const { deleteItem } = require("../controllers/usercontroller");
+
 function createPaymentFromRequest(req)
 {
     let newPayment = {};
@@ -75,6 +77,53 @@ async function getPaymentsForUser(app, userId, res)
     });   
 }
 
+
+function updatePayment(app, paymentInfo, paymentId, res) {   
+    return new Promise (resolve =>  {
+        var paymentObjectId = new ObjectId(paymentId);
+        app.get('myDb')
+        .collection("Payment")
+        .updateOne(
+            { _id: paymentObjectId },
+            { $set : paymentInfo},
+            function (err, dbResp) {
+                if (err) {
+                    console.error(err)
+                }
+                if (dbResp.modifiedCount === 1) {
+                    resolve(res.status(200).json({ msg: "Successfully Amended" }));
+                } else {
+                    resolve(res.status(400).json({ msg: "Not Found" }));
+                }
+            }
+        );        
+    });
+}
+
+function deletePayment(app, paymentId, res){      
+    return new Promise (resolve =>  {
+        var paymentObjectId = new ObjectId(paymentId);
+        app
+        .get('myDb')
+        .collection("Payment")
+        .deleteOne(
+            { _id: paymentObjectId },
+            function (err, dbResp) {
+                if (err) {
+                    console.error(err)
+                }
+                if (dbResp.deletedCount === 1) {
+                    resolve(res.status(200).json({ msg: "Successfully Removed" }));
+                } else {
+                    resolve(res.status(400).json({ msg: "Not Found" }));
+                }
+        })
+    })
+}
+
+
+
+
 function filterPaymentsByType(payments, type){
     return payments.filter(payment => payment.PaymentType == type);
 }
@@ -87,4 +136,6 @@ function filterPaymentsByFrequency(payments, frequency){
 
 module.exports.createPaymentFromRequest = createPaymentFromRequest;
 module.exports.addPayment = addPayment;
+module.exports.updatePayment = updatePayment;
+module.exports.deletePayment = deletePayment;
 module.exports.getPaymentsForUser = getPaymentsForUser;

@@ -9,8 +9,18 @@ module.exports = {
     addItem: async function(app, req, res){
         let payment = paymentModel.createPaymentFromRequest(req);
         res = await paymentModel.addPayment(app, payment, res)
-    } 
+    }, 
     
+    amendItem: async function (app, req, res) {
+        let amendedPayment = paymentModel.createPaymentFromRequest(req);
+        res = await updatePayment(app, amendedPayment, req.body.paymentId, res)
+        return res;
+    },
+
+    deleteItem: async function (app, req, res) {
+        res = await paymentModel.deletePayment(app, req.body.paymentId, res);
+        return res;
+    },
     
     // viewAll: function (app, req, res) {
     //     console.info("Transactions controller - View all transactions")

@@ -24,7 +24,7 @@ module.exports = {
 
     amendItem: async function (app, req, res) {
         let amendedUser = userModel.createUserFromRequest(req);
-        res = await updateUser(app, amendedUser, req.session.userId, res)
+        res = await userModel.updateUser(app, amendedUser, req.session.userId, res)
         return res;
     },
 
