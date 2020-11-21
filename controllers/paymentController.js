@@ -2,11 +2,11 @@ var paymentModel = require('../models/payment.js');
 
 module.exports = {
    
-    viewAllForUser: function (app, req, res) {
+    viewAllForUser: async function (app, req, res) {
         res = await paymentModel.getPaymentsForUser(app, req.session.userId, res)
     },
 
-    addItem: function(app, req, res){
+    addItem: async function(app, req, res){
         let payment = paymentModel.createPaymentFromRequest(req);
         res = await paymentModel.addPaymend(app, payment, res)
     } 

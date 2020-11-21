@@ -2,14 +2,16 @@ var transactionModel = require('../models/transaction.js');
 
 module.exports = {
     
-    viewAllForUser: function (app, req, res) {        
+    viewAllForUser: async function (app, req, res) {        
         res = await transactionModel.getTransactionsForUser(app, req.session.userId, res);
     },
 
-    addItem: function (app, req, res) {
+    addItem: async function (app, req, res) {
         let newTransaction = transactionModel.createTransactionFromRequest(req);
         res = await transactionModel.addTransaction(app, newTransaction, res);
     },
+
+
     // viewAll: function (app, req, res) {
     //     console.info("Transactions controller - View all transactions")
     //     app.set('myDb').collection('transactionsCollection').find({}).toArray(function (err, docs) {
