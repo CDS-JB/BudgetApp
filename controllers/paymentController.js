@@ -11,8 +11,9 @@ module.exports = {
             res.json(docs)
         })
     },
+
     addOne:function(app, req, res){
         let paymentModel = payment.createPaymentFromRequest(req);
-        res = await paymentModel.getPaymentsForUser(app, req)
+        res = await paymentModel.getPaymentsForUser(app, req, res)
     }
 }
