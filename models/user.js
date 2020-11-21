@@ -65,11 +65,11 @@ function addUser(app,newUser, res)  {
 
 function updateUser(app, userInfo, userId, res) {   
     return new Promise (resolve =>  {
-        console.info("PUT / UPDATE controller")
-        var o_id = new ObjectId(userId);
-        console.info(o_id);
-        app.get('myDb').collection("User").updateOne(
-            { _id: o_id },
+        var userObjectId = new ObjectId(userId);
+        app.get('myDb')
+        .collection("User")
+        .updateOne(
+            { _id: userObjectId },
             { $set : userInfo},
             function (err, dbResp) {
                 if (err) {
@@ -84,6 +84,28 @@ function updateUser(app, userInfo, userId, res) {
         );        
     });
 }
+
+function deleteUser(app, userId, res){  
+    var userObjectId = new ObjectId(userId);
+    app
+    .get('myDb')
+    .collection("User")
+    .deleteOne(
+        { _id: userObjectId },
+        function (err, dbResp) {
+            if (err) {
+                console.error(err)
+            }
+            if (dbResp.deletedCount === 1) {
+                res.json({ msg: "Successfully Removed" })
+            } else {
+                res.json({ msg: "Not Found" })
+            }
+        })
+            
+}
+
+
 function createUserFromRequest(req)
 {
     let newUser = {};
