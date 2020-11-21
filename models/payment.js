@@ -1,4 +1,4 @@
-function createPaymentFromRequest(req)
+function createTransactionFromRequest(req)
 {
     let newPayment = {};
 
@@ -32,7 +32,7 @@ function createPaymentFromRequest(req)
     return newPayment;
 }
 
-function addPayment(app, newPayment, res)  {     
+function addPayment(app, newPayment)  {     
     return new Promise (resolve =>  {
         app
         .get('myDb')
@@ -43,16 +43,16 @@ function addPayment(app, newPayment, res)  {
             }
             if (dbResp.insertedCount === 1) {
                 console.info( "Successfully Added" + dbResp.insertedId);
-                resolve (res.statusCode(200).json({msg: "Successfully added payment" }));               
+                resolve ({ statusCode: 200, msg: "Successfully added payment" });               
             } else {
                 console.log("Failed to add to db");
-                resolve(res.statusCode(400).json({ msg: "Failed to add to db" }));                
+                resolve({ statusCode: 400,msg: "Failed to add to db" });                
             }            
         }); 
     });
 }
 
-async function getPaymentsForUser(app, userId, res)
+async function getPaymentsForUser(app, userId)
 {
     return new Promise (resolve =>  {        
         app
@@ -65,11 +65,11 @@ async function getPaymentsForUser(app, userId, res)
             }
             if(payments.length >0 ){
                 console.log(payments.length + " payments found for " + userId); 
-                resolve(res.statusCode(200).json({ payments: payments, msg: "Payments found for user"}));
+                resolve({statusCode: 200, payments: payments, msg: "Payments found for user"});
             }
             else {
                 console.log("No payments found for " + userId);             
-                resolve(res.statusCode(400).json({  msg: "No payments found" }));   
+                resolve({ statusCode: 400,  msg: "No payments found" });   
             } 
         });
     });   
@@ -85,6 +85,6 @@ function filterPaymentsByFrequency(payments, frequency){
 
 
 
-module.exports.createPaymentFromRequest = createPaymentFromRequest;
+module.exports.createTransactionFromRequest = createTransactionFromRequest;
 module.exports.addPayment = addPayment;
 module.exports.getPaymentsForUser = getPaymentsForUser;
