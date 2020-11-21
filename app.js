@@ -29,7 +29,7 @@ app.use(
       resave: true,
       saveUninitialized: true,
       store: new MongoStore({
-        url: "mongodb://localhost:27017/budgetAppDb"
+        url: "mongodb+srv://Admin:$HU3002943@budgetapp.qombv.mongodb.net/test"
       })
     })
   );
@@ -49,9 +49,9 @@ app.use('/', routes(app))
 
 var MongoClient = require('mongodb').MongoClient
 
-MongoClient.connect('mongodb://localhost:27017', { useNewUrlParser: true, useUnifiedTopology: true }, function (err, client) {
+MongoClient.connect('mongodb+srv://Admin:$HU3002943@budgetapp.qombv.mongodb.net/test', { useNewUrlParser: true, useUnifiedTopology: true }, function (err, client) {
 
-    app.set('myDb', client.db('budgetAppDb'));
+    app.set('myDb', client.db('BudgetApp'));
 
 })
 
