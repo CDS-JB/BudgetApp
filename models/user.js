@@ -6,15 +6,15 @@ async function login(app, emailAddress, password, session, res)
     return new Promise (resolve =>  {        
         app
         .set("myDb")
-        .collection("usersCollection")
-        .find({ emailAddress: emailAddress })
+        .collection("User")
+        .find({ Email: emailAddress })
         .toArray(function (err, users) {
             if (err) {
                 console.error(err);                
             } 
             if (users.length > 0) {
                 let user = users[0];
-                bcrypt.compare(password, user.password, function(err, result) {       
+                bcrypt.compare(password, user.Password, function(err, result) {       
                     if (result == true) {
                         session.login = true;                                  
                         session.userId = user._id;                            
@@ -40,8 +40,8 @@ function addUser(app,newUser, res)  {
         bcrypt.hash(newUser.password, saltRounds, function (err, hash) 
         {
             let hashedPwd = hash;
-            console.log(newUser.password);
-            newUser.password = hashedPwd;
+            console.log(newUser.Password);
+            newUser.Password = hashedPwd;
             console.log(hashedPwd);
 
             app
@@ -111,23 +111,23 @@ function createUserFromRequest(req)
 {
     let newUser = {};
 
-    if (req.body.firstname != null)
-        newUser.firstName = req.body.FirstNm;
+    if (req.body.FirstNm != null)
+        newUser.FirstNm = req.body.FirstNm;
         
-    if (req.body.lastname != null) 
+    if (req.body.LastNm != null) 
         newUser.lastname = req.body.LastNm;
 
-    if (req.body.dateOfBirth != null)
-        newUser.dateOfBirth = req.body.DOB;
+    if (req.body.DOB != null)
+        newUser.DOB = req.body.DOB;
 
     if (req.body.username != null)
-        newUser.emailAddress = req.body.Email;
+        newUser.Email = req.body.username;
 
-    if (req.body.password != null)
-        newUser.password = req.body.Password;
+    if (req.body.Password != null)
+        newUser.Password = req.body.Password;
 
-    if (req.body.budgetTargetDate != null)
-        newUser.budgetTargetDate = req.body.BudgetTargetDate;
+    if (req.body.BudgetTargetDate != null)
+        newUser.BudgetTargetDate = req.body.BudgetTargetDate;
 
     if (req.body.MonthlyBudget != null)
         newUser.MonthlyBudget = req.body.MonthlyBudget;
