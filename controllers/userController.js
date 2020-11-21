@@ -1,7 +1,7 @@
 var  userModel = require('../models/user.js');
 
 module.exports = {
-     login: async function (app, req, res) {
+    login: async function (app, req, res) {
         console.log("userController.login")
         let emailAddress = req.body.username;
         let password = req.body.password;    

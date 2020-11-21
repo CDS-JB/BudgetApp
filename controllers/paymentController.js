@@ -1,19 +1,26 @@
 var paymentModel = require('../models/payment.js');
 
 module.exports = {
-    viewAll: function (app, req, res) {
-        console.info("Transactions controller - View all transactions")
-        app.set('myDb').collection('transactionsCollection').find({}).toArray(function (err, docs) {
-            if (err) {
-                console.error(err)
-            }
-            console.dir(docs);
-            res.json(docs)
-        })
+   
+    viewAllForUser: function (app, req, res) {
+        res = await paymentModel.getPaymentsForUser(app, req.session.userId, res)
     },
 
-    addOne:function(app, req, res){
-        let paymentModel = payment.createPaymentFromRequest(req);
-        res = await paymentModel.getPaymentsForUser(app, req, res)
-    }
+    addItem: function(app, req, res){
+        let payment = paymentModel.createPaymentFromRequest(req);
+        res = await paymentModel.addPaymend(app, payment, res)
+    } 
+    
+    
+    // viewAll: function (app, req, res) {
+    //     console.info("Transactions controller - View all transactions")
+    //     app.set('myDb').collection('transactionsCollection').find({}).toArray(function (err, docs) {
+    //         if (err) {
+    //             console.error(err)
+    //         }
+    //         console.dir(docs);
+    //         res.json(docs)
+    //     })
+    // },
+
 }
