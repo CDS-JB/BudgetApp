@@ -2,8 +2,8 @@ function createTransactionFromRequest(req)
 {
     let newTransaction = {};
 
-    if (req.body.UserObjectId != null)
-        newTransaction.UserObjectId = req.body.UserObjectId;
+    //if (req.body.UserObjectId != null)
+    newTransaction.UserObjectId = req.session.userId;
         
     if (req.body.AccountProvider != null) 
         newTransaction.AccountProvider = req.body.AccountProvider;

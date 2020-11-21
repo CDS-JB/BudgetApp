@@ -2,8 +2,8 @@ function createTransactionFromRequest(req)
 {
     let newPayment = {};
 
-    if (req.body.UserObjectId != null)
-        newPayment.UserObjectId = req.body.UserObjectId;
+    //if (req.body.UserObjectId != null)
+    newPayment.UserObjectId = req.session.userId;
         
     if (req.body.PaymentType != null) 
         newPayment.PaymentType = req.body.PaymentType;
