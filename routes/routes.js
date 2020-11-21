@@ -23,6 +23,9 @@ module.exports = (app) => {
     router.put('/api/register', (req, res) => {
         userController.addItem(app, req, res);
     });
+    router.delete('/api/unregister', (req, res) => {
+        userController.deleteItem(app, req, res);
+    });
 
 
 

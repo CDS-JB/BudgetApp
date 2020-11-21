@@ -85,24 +85,25 @@ function updateUser(app, userInfo, userId, res) {
     });
 }
 
-function deleteUser(app, userId, res){  
-    var userObjectId = new ObjectId(userId);
-    app
-    .get('myDb')
-    .collection("User")
-    .deleteOne(
-        { _id: userObjectId },
-        function (err, dbResp) {
-            if (err) {
-                console.error(err)
-            }
-            if (dbResp.deletedCount === 1) {
-                res.json({ msg: "Successfully Removed" })
-            } else {
-                res.json({ msg: "Not Found" })
-            }
+function deleteUser(app, userId, res){      
+    return new Promise (resolve =>  {
+        var userObjectId = new ObjectId(userId);
+        app
+        .get('myDb')
+        .collection("User")
+        .deleteOne(
+            { _id: userObjectId },
+            function (err, dbResp) {
+                if (err) {
+                    console.error(err)
+                }
+                if (dbResp.deletedCount === 1) {
+                    resolve(res.status(200).json({ msg: "Successfully Removed" }));
+                } else {
+                    resolve(res.status(400).json({ msg: "Not Found" }));
+                }
         })
-            
+    })
 }
 
 
@@ -140,4 +141,5 @@ function createUserFromRequest(req)
 module.exports.login = login;
 module.exports.addUser = addUser;
 module.exports.updateUser = updateUser;
+module.exports.deleteUser = deleteUser;
 module.exports.createUserFromRequest = createUserFromRequest;

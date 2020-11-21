@@ -27,22 +27,9 @@ module.exports = {
         res = await updateUser(app, amendedUser, req.session.userId, res)
         return res;
     },
-    // deleteItem: function (app, req, res) {
-    //     console.info("DELETE controller")
-    //     var removeUser = req.body;
-    //     console.dir(removeUser);
-    //     var o_id = new ObjectId(removeUser.userID);
-    //     app.get('myDb').collection("usersCollection").deleteOne(
-    //         { _id: o_id },
-    //         function (err, dbResp) {
-    //             if (err) {
-    //                 console.error(err)
-    //             }
-    //             if (dbResp.deletedCount === 1) {
-    //                 res.json({ msg: "Successfully Removed" })
-    //             } else {
-    //                 res.json({ msg: "Not Found" })
-    //             }
-    //         })
-    // },
+
+    deleteItem: async function (app, req, res) {
+        res = await userModel.deleteUser(app, req.session.userId, res);
+        return res;
+    },
 }
