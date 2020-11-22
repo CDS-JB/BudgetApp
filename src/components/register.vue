@@ -44,6 +44,7 @@ export default {
         submit(){
             axios.post('api/register', this.form).then(res => {
                 this.$session.start()
+                this.$session.set('name', this.form.firstname);
                 this.$router.push('/home');
             }).catch(err => {
                 console.log(err.response.data)
