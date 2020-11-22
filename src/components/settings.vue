@@ -66,6 +66,8 @@ export default {
                     this.backupUser.lastname = this.user.lastname
                     this.user.password = ''
                     this.user.confirmPassword = ''
+
+                    this.$emit('updateSession')
                 }).catch((err) => {
                     console.error(err.response.data)
                 })
