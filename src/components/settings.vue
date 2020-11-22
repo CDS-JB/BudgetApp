@@ -1,39 +1,50 @@
 <template>
-    <div class="loginForm shadow p-3 mb-5 bg-white rounded">
-        <form>
-            <div class="form-group">
-                <label>Username</label>
-                <input type="text" class="form-control" v-model="user.username" required>
-            </div>
-            <div class="form-group">
-                <label>First Name</label>
-                <input type="text" class="form-control" v-model="user.firstname" required>
-            </div>
-            <div class="form-group">
-                <label>Last Name</label>
-                <input type="text" class="form-control" v-model="user.lastname" required>
-            </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" class="form-control" v-model="user.password" required>
-            </div>
-            <div class="form-group">
-                <label>Confirm Password</label>
-                <input type="password" class="form-control" v-model="user.confirmPassword" required>
-            </div>
-            <button type="button" class="btn btn-outline-dark" @click="update">Update</button>
-            <button type="button" class="btn btn-outline-dark" @click="reset">Reset</button>
-        </form>
+    <div>
+        <!-- <div class="loginForm shadow p-3 mb-5 bg-white rounded">
+            <form>
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" class="form-control" v-model="user.username" required>
+                </div>
+                <div class="form-group">
+                    <label>First Name</label>
+                    <input type="text" class="form-control" v-model="user.firstname" required>
+                </div>
+                <div class="form-group">
+                    <label>Last Name</label>
+                    <input type="text" class="form-control" v-model="user.lastname" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" class="form-control" v-model="user.password" required>
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" class="form-control" v-model="user.confirmPassword" required>
+                </div>
+                <button type="button" class="btn btn-outline-dark" @click="update">Update</button>
+                <button type="button" class="btn btn-outline-dark" @click="reset">Reset</button>
+            </form>
+        </div> -->
+        <success-modal v-if="showSuccessModal" :header='"Success"' :body='"Successfully updated your details"' @close="closeModal('success')"></success-modal>
+        <error-modal v-if="showErrorModal" :header='"Error"' :body='"Failed to update your details"' @close="closeModal('error')"></error-modal>
     </div>
 </template>
 
 <script>
+import Modal from './modals/basicModal';
+
 export default {
     beforeCreate: function () {
         if (!this.$session.exists()){
             console.error('Unauthenticated. Redirecting to Welcome')
             this.$router.push('/')
         }
+    },
+
+    components: {
+        'success-modal': Modal,
+        // 'error-modal': Modal
     },
 
     data() {
@@ -51,7 +62,9 @@ export default {
                 lastname: '',
                 password: '',
                 confirmPassword: ''
-            }
+            },
+            showSuccessModal: true,
+            showErrorModal: false,
         }
     },
 
@@ -59,6 +72,8 @@ export default {
         update() {
             axios.post("/api/updateuser", this.user)
                 .then((res) => {
+                    this.showSuccessModal = true;
+
                     this.$session.set('name', this.user.firstname)
 
                     this.backupUser.username = this.user.username
@@ -69,6 +84,8 @@ export default {
 
                     this.$emit('updateSession')
                 }).catch((err) => {
+                    this.showErrorModal = true;
+                    
                     console.error(err.response.data)
                 })
         },
@@ -80,6 +97,14 @@ export default {
 
             this.user.password = ''
             this.user.confirmPassword = ''
+        },
+
+        closeModal(name) {
+            if(name === 'success'){
+                this.showSuccessModal = false;
+            } else {
+                this.showErrorModal = false;
+            }
         }
     },
 
