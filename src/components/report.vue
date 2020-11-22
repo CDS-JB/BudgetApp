@@ -125,6 +125,7 @@ export default {
     return {
       user: {},
       transactions: [],
+      payments: [],
       display: {
         balance: 0.0,
         income: 0.0,
@@ -164,6 +165,7 @@ export default {
     };
   },
 
+//--------------------- Transaction Calculations ----------------------------- \\
   methods: {
     calcBalance() {
       // get EndBalance of most recent transaction
@@ -268,17 +270,214 @@ export default {
         Number(Math.round(value + "e" + dec) + "e-" + dec).toFixed(dec)
       );
     },
+
+//--------------------- CALCULATE INCOME----------------------------- \\
+
+    // Calculates income balances
+    calcPaymentIncomeBalances() {
+      var balance = 0;
+
+      this.payments.filter((p) => {
+        return (
+        p.PaymentType == "Income"
+        && p.FrequencyType == 'Balance' 
+        && p.IncInBudget == 'true'
+        );
+      }).forEach((p) => {
+        balance += p.Amount
+      })
+      this.display.balance = this.round(balance);
+     // this.incomeLineChartData = data;
+    },
+  
+
+    // Calculates Lump sum income
+    calcPaymentIncomeLumpSum() {
+      var income = 0;
+
+      this.payments.filter((p) => {
+        return (
+          p.PaymentType == "Income" 
+          && p.FrequencyType == 'Lump sum' 
+          && p.IncInBudget == 'true'
+          && p.PaymentStart > moment().format()
+          );
+      }).forEach((p) => {
+        income += p.Amount
+      })
+      this.display.income = this.round(income);
+    },
+
+    // Caclulate Weekly Income
+    calcPaymentIncomeWeekly() {
+      var income = 0;
+
+      this.payments.filter((p) => {
+        return (
+        p.PaymentType == "Income" 
+        && p.FrequencyType == 'Weekly' 
+        && p.IncInBudget == 'true'
+        && p.PaymentEnd > moment().format()
+        );
+      }).forEach((p) => {
+        var StartDate = moment(p.PaymentStart)
+        var EndDate = moment(p.PaymentEnd)
+        var TargetDate = moment(p.TargetDate)
+
+        if (p.TargetDate < p.PaymentEnd) {EndDate = TargetDate;}
+
+      //  console.log(StartDate)
+      //  console.log(EndDate)
+      //  console.log(EndDate.diff(StartDate, 'days'))
+        
+        income += ((p.Amount * EndDate.diff(StartDate, 'weeks')) / p.Frequency)
+        //income = EndDate.diff(StartDate, 'days')
+      })
+      this.display.income = this.round(income);
+    },
+
+    // Calculates Monthly Income
+    calcPaymentIncomeMonthly() {
+      var income = 0;
+
+      this.payments.filter((p) => {
+        return (
+        p.PaymentType == "Income" 
+        && p.FrequencyType == 'Monthly' 
+        && p.IncInBudget == 'true'
+        && p.PaymentEnd > moment().format()
+        );
+      }).forEach((p) => {
+        var StartDate = moment(p.PaymentStart)
+        var EndDate = moment(p.PaymentEnd)
+        var TargetDate = moment(p.TargetDate)
+
+        if (p.TargetDate < p.PaymentEnd) {EndDate = TargetDate;}
+
+        income += ((p.Amount * EndDate.diff(StartDate, 'months')) / p.Frequency)
+      })
+      this.display.income = this.round(income);
+    },
+
+    // Calculates total income
+    calcPaymentIncomeTotal() {
+      var remaining = 0;
+      var Balances = this.calcPaymentIncomeBalances();
+      var Lumpsums = this.calcPaymentIncomeLumpSum();
+      var sum = Balances + Lumpsums
+
+      remaining = sum
+      //+ this.calcPaymentIncomeWeekly()
+      //+ this.calcPaymentIncomeMonthly();
+
+      this.display.remaining = this.round(remaining);
+    },
+
+//--------------------- CALCULATE OUTCOME ----------------------------- \\
+
+    // Calculates outcome debt
+    calcPaymentOutcomeBalances() {
+      var expenses = 0;
+
+      this.payments.filter((p) => {
+        return (
+        p.PaymentType == "Outcome"
+        && p.FrequencyType == 'Debt' 
+        && p.IncInBudget == 'true'
+        );
+      }).forEach((p) => {
+        expenses += p.Amount
+      })
+      this.display.expenses = this.round(expenses);
+    },
+
+    // Calculates Lump sum outcome
+    calcPaymentOutcomeLumpSum() {
+      var expenses = 0;
+
+      this.payments.filter((p) => {
+        return (
+          p.PaymentType == "Outcome" 
+          && p.FrequencyType == 'Lump sum' 
+          && p.IncInBudget == 'true'
+          && p.PaymentStart > moment().format()
+          );
+      }).forEach((p) => {
+        expenses += p.Amount
+      })
+      this.display.expenses = this.round(expenses);
+    },
+
+    // Caclulate Weekly Outgoings
+    calcPaymentOutcomeWeekly() {
+      var expenses = 0;
+
+      this.payments.filter((p) => {
+        return (
+        p.PaymentType == "Outcome" 
+        && p.FrequencyType == 'Weekly' 
+        && p.IncInBudget == 'true'
+        && p.PaymentEnd > moment().format()
+        );
+      }).forEach((p) => {
+        var StartDate = moment(p.PaymentStart)
+        var EndDate = moment(p.PaymentEnd)
+        var TargetDate = moment(p.TargetDate)
+
+        if (p.TargetDate < p.PaymentEnd) {EndDate = TargetDate;}
+        
+        expenses += ((p.Amount * EndDate.diff(StartDate, 'weeks')) / p.Frequency)
+        
+      })
+      this.display.expenses = this.round(expenses);
+    },
+
+    // Calculates Monthly Outcome
+    calcPaymentOutcomeMonthly() {
+      var expenses = 0;
+
+      this.payments.filter((p) => {
+        return (
+        p.PaymentType == "Outcome" 
+        && p.FrequencyType == 'Monthly' 
+        && p.IncInBudget == 'true'
+        && p.PaymentEnd > moment().format()
+        );
+      }).forEach((p) => {
+        var StartDate = moment(p.PaymentStart)
+        var EndDate = moment(p.PaymentEnd)
+        var TargetDate = moment(p.TargetDate)
+
+        if (p.TargetDate < p.PaymentEnd) {EndDate = TargetDate;}
+
+        expenses += ((p.Amount * EndDate.diff(StartDate, 'months')) / p.Frequency)
+      })
+      this.display.expenses = this.round(expenses);
+    }
+
   },
 
   mounted() {
     axios.get("/api/report").then((res) => {
+      //var remaining = 0.0
+      //var IncomeLumpSum = this.calcPaymentIncomeLumpSum();
+      //var IncomeWeekly = this.calcPaymentIncomeWeekly();
       this.user = res.data.user;
       this.transactions = res.data.transactions;
-
-      this.calcBalance();
-      this.calcIncome();
-      this.calcExpenses();
+      this.payments = res.data.payments;
+      //this.calcBalance();
+      this.calcPaymentIncomeBalances();
+      //this.calcPaymentIncomeBalances();
+      //this.calcPaymentIncomeLumpSum();
+      //this.calcPaymentIncomeWeekly();
+      this.calcPaymentIncomeMonthly();
+      //this.calcExpenses();
+      //this.calcPaymentOutcomeBalances();
+      //this.calcPaymentOutcomeLumpSum();
+      //this.calcPaymentOutcomeWeekly();
+      this.calcPaymentOutcomeMonthly();
       this.calcRemaining();
+      //remaining = IncomeLumpSum + IncomeWeekly;
     });
   },
 };
