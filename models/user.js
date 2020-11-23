@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const { ObjectID, ObjectId } = require("mongodb");
 const saltRounds = 10;
 
 async function login(app, emailAddress, password, session, res)
@@ -19,17 +20,17 @@ async function login(app, emailAddress, password, session, res)
                         session.login = true;                                  
                         session.userId = user._id;                            
                         console.log("password correct");
-                        resolve(res.status(200).json({ statusCode: 200, msg: "Found " + user.emailAddress  }));
+                        resolve(res.status(200).json({FirstNm: user.FirstNm, BudgetTargetDate: user.BudgetTargetDate}));
                     }
                     else {
                         console.log("password incorect");
-                        resolve({ statusCode: 400, msg: "Invalid Password" });
+                        resolve(res.status(400).json({error: "Invalid Email and/or Password"}));   
                     }
                 });
             }
             else {
                 console.log("User not found in database for " + emailAddress);             
-                resolve({ statusCode: 400,  msg: "User Not Found" });   
+                resolve(res.status(400).json({error: "Invalid Email and/or Password"}));   
             } 
         });
     });   
@@ -60,6 +61,31 @@ function addUser(app,newUser, res)  {
     });
 }
 
+function getUser(app, userId, res) {
+    return new Promise(resolve => {
+        var userObjectId = new ObjectId(userId);
+
+        app
+        .set('myDb')
+        .collection("User")
+        .find({"_id": userObjectId})
+        .toArray((err, users) => {
+            if(err){
+                resolve(res.status(400).json({msg: err}))
+            } else {
+                user = {
+                    Email: users[0].Email,
+                    FirstNm: users[0].FirstNm,
+                    LastNm: users[0].LastNm,
+                    BudgetTargetDate: users[0].BudgetTargetDate
+                }
+
+                resolve(res.status(200).json({user}))
+            }
+        })
+    })
+}
+
 function updateUser(app, userInfo, userId, res) {   
     return new Promise (resolve =>  {
         var userObjectId = new ObjectId(userId);
@@ -74,9 +100,9 @@ function updateUser(app, userInfo, userId, res) {
                     console.error(err)
                 }
                 if (dbResp.modifiedCount === 1) {
-                    resolve(res.status(200).json({ msg: "Successfully Amended" }));
+                    resolve(res.status(200).json({ msg: "Updated"}));
                 } else {
-                    resolve(res.status(400).json({ msg: "Not Found" }));
+                    resolve(res.status(400).json({ error: "Not Found" }));
                 }
             }
         );        
@@ -109,17 +135,18 @@ function createUserFromRequest(req)
 {
     let newUser = {};
 
-    if (req.body.username != null)
-        newUser.Email = req.body.username;
+    if (req.body.Email != null)
+        newUser.Email = req.body.Email;
 
-    if (req.body.password != null)
-        newUser.Password = req.body.password;
+    if (req.body.Password != null && req.body.Password != '')
+        newUser.Password = req.body.Password;
+        // I think the bcrypt should go here, that way the password will be automatically encrypted for login, add, update - MM
 
-    if (req.body.firstname != null)
-        newUser.FirstNm = req.body.firstname;
+    if (req.body.FirstNm != null)
+        newUser.FirstNm = req.body.FirstNm;
         
-    if (req.body.lastname != null) 
-        newUser.lastname = req.body.lastname;
+    if (req.body.LastNm != null) 
+        newUser.LastNm = req.body.LastNm;
 
     if (req.body.DOB != null)
         newUser.DOB = req.body.DOB;
@@ -138,6 +165,7 @@ function createUserFromRequest(req)
    
 module.exports.login = login;
 module.exports.addUser = addUser;
+module.exports.getUser = getUser;
 module.exports.updateUser = updateUser;
 module.exports.deleteUser = deleteUser;
 module.exports.createUserFromRequest = createUserFromRequest;

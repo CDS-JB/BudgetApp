@@ -4,8 +4,8 @@ module.exports = {
     
     login: async function (app, req, res) {
         console.log("userController.login")
-        let emailAddress = req.body.username;
-        let password = req.body.password;    
+        let emailAddress = req.body.Email;
+        let password = req.body.Password;    
         res = await userModel.login(app, emailAddress, password, req.session,res);          
         return res;
     },
@@ -19,6 +19,11 @@ module.exports = {
     addItem: async function (app, req, res) {        
         let newUser =  userModel.createUserFromRequest(req);                                
         res = await userModel.addUser(app,newUser, res);
+        return res;
+    },
+
+    getItem: async function (app, req, res) {
+        res = await userModel.getUser(app, req.session.userId, res);
         return res;
     },
 

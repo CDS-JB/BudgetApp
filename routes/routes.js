@@ -22,7 +22,10 @@ module.exports = (app) => {
     })
     router.post('/api/register', (req, res) => {
         userController.addItem(app, req, res);
-    });    
+    });
+    router.get('/api/updateuser', (req, res) => {
+        userController.getItem(app, req, res);
+    });
     router.put('/api/updateuser', (req, res) => {
         userController.amendItem(app, req, res);
     });

@@ -3,13 +3,16 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{header}}</h5>
+                    <h5 class="modal-title">{{options.header.text}}</h5>
                     <button type="button" class="close" @click="close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
 
-                <div class="modal-body">{{body}}</div>
+                <div class="modal-body">
+                    <div>{{options.body.text}}</div>
+                    <div v-if="options.type === 'Error'">{{options.body.error}}</div>
+                </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" @click="close">Close</button>
@@ -21,7 +24,7 @@
 
 <script>
 export default {
-    props: ['header', 'body'],
+    props: ['options'],
 
     methods: {
         close() {

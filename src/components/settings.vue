@@ -1,33 +1,50 @@
 <template>
     <div>
-        <!-- <div class="loginForm shadow p-3 mb-5 bg-white rounded">
+        <div class="loginForm shadow p-3 mb-5 bg-white rounded">
             <form>
                 <div class="form-group">
-                    <label>Username</label>
-                    <input type="text" class="form-control" v-model="user.username" required>
+                    <label>Email</label>
+                    <input type="text" class="form-control" v-model="user.Email" required max:100>
                 </div>
                 <div class="form-group">
                     <label>First Name</label>
-                    <input type="text" class="form-control" v-model="user.firstname" required>
+                    <input type="text" class="form-control" v-model="user.FirstNm" required max:100>
                 </div>
                 <div class="form-group">
                     <label>Last Name</label>
-                    <input type="text" class="form-control" v-model="user.lastname" required>
+                    <input type="text" class="form-control" v-model="user.LastNm" required max:100>
                 </div>
                 <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" class="form-control" v-model="user.password" required>
+                    <label>Budget Target Date</label>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label>Day</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Month</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label>Year</label>
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label>Confirm Password</label>
-                    <input type="password" class="form-control" v-model="user.confirmPassword" required>
+                    <label>New Password</label>
+                    <input type="password" class="form-control" v-model="user.Password" max:100>
+                </div>
+                <div class="form-group">
+                    <label>Confirm New Password</label>
+                    <input type="password" class="form-control" v-model="user.ConfirmPassword">
                 </div>
                 <button type="button" class="btn btn-outline-dark" @click="update">Update</button>
                 <button type="button" class="btn btn-outline-dark" @click="reset">Reset</button>
             </form>
-        </div> -->
-        <success-modal v-if="showSuccessModal" :header='"Success"' :body='"Successfully updated your details"' @close="closeModal('success')"></success-modal>
-        <error-modal v-if="showErrorModal" :header='"Error"' :body='"Failed to update your details"' @close="closeModal('error')"></error-modal>
+        </div>
+        <success-modal v-if="successModal.display" :options="successModal" @close="closeModal('success')"></success-modal>
+        <error-modal v-if="errorModal.display" :options="errorModal" @close="closeModal('error')"></error-modal>
     </div>
 </template>
 
@@ -44,82 +61,110 @@ export default {
 
     components: {
         'success-modal': Modal,
-        // 'error-modal': Modal
+        'error-modal': Modal
     },
 
     data() {
         return {
             user: {
-                username: '',
-                firstname: '',
-                lastname: '',
-                password: '',
-                confirmPassword: ''
+                Email: '',
+                FirstNm: '',
+                LastNm: '',
+                Password: '',
+                ConfirmPassword: ''
             },
             backupUser: {
-                username: '',
-                firstname: '',
-                lastname: '',
-                password: '',
-                confirmPassword: ''
+                Email: '',
+                FirstNm: '',
+                LastNm: '',
+                Password: '',
+                ConfirmPassword: ''
             },
-            showSuccessModal: true,
-            showErrorModal: false,
+            successModal: {
+                display: false,
+                type: 'Success',
+                header: {text: 'Success'},
+                body: {text: 'Successfully updated your details'}
+            },
+            errorModal: {
+                display: false,
+                type: 'Error',
+                header: {text: 'Error'},
+                body: {text: 'Failed to update settings due to the following error:', error: 'Debug Error'}
+            }
         }
     },
 
     methods: {
         update() {
-            axios.post("/api/updateuser", this.user)
-                .then((res) => {
-                    this.showSuccessModal = true;
+            if(!this.isModified()){
+                this.errorModal.body.error = "Nothing to update";
+                this.errorModal.display = true;
+            } else {
+                if(this.user.Password !== this.user.ConfirmPassword){
+                    this.errorModal.body.error = 'Passwords must match';
+                    this.errorModal.display = true;
+                } else if (this.user.Password !== '' && this.user.Password.lenght < 8) {
+                    this.errorModal.body.error = 'Password must be at least 8 characters long';
+                    this.errorModal.display = true;
+                } else {
+                    axios.put("/api/updateuser", this.user)
+                        .then((res) => {
+                            this.successModal.display = true;
 
-                    this.$session.set('name', this.user.firstname)
+                            this.user.Password = '';
+                            this.user.ConfirmPassword = '';
 
-                    this.backupUser.username = this.user.username
-                    this.backupUser.firstname = this.user.firstname
-                    this.backupUser.lastname = this.user.lastname
-                    this.user.password = ''
-                    this.user.confirmPassword = ''
+                            for(const [key, value] of Object.entries(this.user)){
+                                this.backupUser[key] = value;
+                            }
 
-                    this.$emit('updateSession')
-                }).catch((err) => {
-                    this.showErrorModal = true;
-                    
-                    console.error(err.response.data)
-                })
+                            this.$session.set('FirstNm', this.user.FirstNm);
+                            this.$emit('updateSession');
+                        }).catch((err) => {
+                            this.errorModal.body.error = err.response.data.error;
+                            this.errorModal.display = true;
+                        })
+                }
+            }
+        },
+
+        isModified(){
+            for (const [key, value] of Object.entries(this.backupUser)){
+                if(this.user[key] !== this.backupUser[key]){
+                    return true
+                }
+            }
+
+            return false
         },
 
         reset() {
             for (const [key, value] of Object.entries(this.backupUser)){
                 this.user[key] = value
             }
-
-            this.user.password = ''
-            this.user.confirmPassword = ''
         },
 
         closeModal(name) {
             if(name === 'success'){
-                this.showSuccessModal = false;
+                this.successModal.display = false;
             } else {
-                this.showErrorModal = false;
+                this.errorModal.display = false;
             }
         }
     },
 
     mounted() {
         this.backupUser.firstname = this.user.firstname
-        axios.get("/api/edituser")
+        axios.get("/api/updateuser")
             .then((res) => {
-                this.user.username = res.data.username
-                this.user.firstname = res.data.firstname
-                this.user.lastname = res.data.lastname
-
-                this.backupUser.username = res.data.username
-                this.backupUser.firstname = res.data.firstname
-                this.backupUser.lastname = res.data.lastname
+                for (const [key, value] of Object.entries(res.data.user)){
+                    this.user[key] = value;
+                    this.backupUser[key] = value;
+                }
             }).catch((err) => {
+                this.errorModal.body.text = err.response.data
+                this.errorModal.display = true;
                 console.error(err.response.data);
             })
     }
