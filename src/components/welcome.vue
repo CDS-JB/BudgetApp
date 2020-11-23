@@ -3,7 +3,7 @@
         <div v-if="showLogin"><login></login></div>
         <div v-else><register></register></div>
         <div>
-            <button type="button" class="btn btn-outline-dark" @click="showLogin = !showLogin">Switch</button>
+            <button type="button" class="btn btn-outline-dark" @click="showLogin = !showLogin">{{showLogin ? 'Register' : 'Login'}}</button>
         </div>
     </div>
 </template>
