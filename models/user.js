@@ -37,15 +37,12 @@ async function login(app, emailAddress, password, session, res)
 
 function addUser(app,newUser, res)  {     
     return new Promise (resolve =>  {
-        bcrypt.hash(newUser.password, saltRounds, function (err, hash) 
+        bcrypt.hash(newUser.Password, saltRounds, function (err, hash) 
         {
-            let hashedPwd = hash;
-            console.log(newUser.Password);
-            newUser.Password = hashedPwd;
-            console.log(hashedPwd);
+            newUser.Password = hash;
 
             app
-            .get('myDb')
+            .set('myDb')
             .collection("User")
             .insertOne(newUser, function (err, dbResp) {
                 if (err) {
@@ -66,7 +63,8 @@ function addUser(app,newUser, res)  {
 function updateUser(app, userInfo, userId, res) {   
     return new Promise (resolve =>  {
         var userObjectId = new ObjectId(userId);
-        app.get('myDb')
+        app
+        .set('myDb')
         .collection("User")
         .updateOne(
             { _id: userObjectId },
@@ -89,7 +87,7 @@ function deleteUser(app, userId, res){
     return new Promise (resolve =>  {
         var userObjectId = new ObjectId(userId);
         app
-        .get('myDb')
+        .set('myDb')
         .collection("User")
         .deleteOne(
             { _id: userObjectId },
@@ -111,20 +109,20 @@ function createUserFromRequest(req)
 {
     let newUser = {};
 
-    if (req.body.FirstNm != null)
-        newUser.FirstNm = req.body.FirstNm;
-        
-    if (req.body.LastNm != null) 
-        newUser.lastname = req.body.LastNm;
-
-    if (req.body.DOB != null)
-        newUser.DOB = req.body.DOB;
-
     if (req.body.username != null)
         newUser.Email = req.body.username;
 
-    if (req.body.Password != null)
-        newUser.Password = req.body.Password;
+    if (req.body.password != null)
+        newUser.Password = req.body.password;
+
+    if (req.body.firstname != null)
+        newUser.FirstNm = req.body.firstname;
+        
+    if (req.body.lastname != null) 
+        newUser.lastname = req.body.lastname;
+
+    if (req.body.DOB != null)
+        newUser.DOB = req.body.DOB;
 
     if (req.body.BudgetTargetDate != null)
         newUser.BudgetTargetDate = req.body.BudgetTargetDate;

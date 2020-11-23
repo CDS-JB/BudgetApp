@@ -286,7 +286,7 @@ export default {
       }).forEach((p) => {
         balance += p.Amount
       })
-      this.display.balance = this.round(balance);
+      return this.display.balance = this.round(balance);
      // this.incomeLineChartData = data;
     },
   
@@ -305,7 +305,7 @@ export default {
       }).forEach((p) => {
         income += p.Amount
       })
-      this.display.income = this.round(income);
+      return this.display.income = this.round(income);
     },
 
     // Caclulate Weekly Income
@@ -322,9 +322,9 @@ export default {
       }).forEach((p) => {
         var StartDate = moment(p.PaymentStart)
         var EndDate = moment(p.PaymentEnd)
-        var TargetDate = moment(p.TargetDate)
+        var TargetDate = moment(this.user.TargetDate)
 
-        if (p.TargetDate < p.PaymentEnd) {EndDate = TargetDate;}
+        if (TargetDate < EndDate) {EndDate = TargetDate;}
 
       //  console.log(StartDate)
       //  console.log(EndDate)
@@ -333,7 +333,7 @@ export default {
         income += ((p.Amount * EndDate.diff(StartDate, 'weeks')) / p.Frequency)
         //income = EndDate.diff(StartDate, 'days')
       })
-      this.display.income = this.round(income);
+      return this.display.income = this.round(income);
     },
 
     // Calculates Monthly Income
@@ -350,33 +350,36 @@ export default {
       }).forEach((p) => {
         var StartDate = moment(p.PaymentStart)
         var EndDate = moment(p.PaymentEnd)
-        var TargetDate = moment(p.TargetDate)
+        var TargetDate = moment(this.user.TargetDate)
 
-        if (p.TargetDate < p.PaymentEnd) {EndDate = TargetDate;}
+        if (TargetDate < EndDate) {EndDate = TargetDate;}
 
         income += ((p.Amount * EndDate.diff(StartDate, 'months')) / p.Frequency)
       })
-      this.display.income = this.round(income);
+      return this.display.income = this.round(income);
     },
 
     // Calculates total income
     calcPaymentIncomeTotal() {
-      var remaining = 0;
+      var income = 0;
       var Balances = this.calcPaymentIncomeBalances();
       var Lumpsums = this.calcPaymentIncomeLumpSum();
-      var sum = Balances + Lumpsums
+      var WeeklyIncome = this.calcPaymentIncomeWeekly();
+      var MonthlyIncome = this.calcPaymentIncomeMonthly();     
 
-      remaining = sum
-      //+ this.calcPaymentIncomeWeekly()
-      //+ this.calcPaymentIncomeMonthly();
+      var income = 
+        Balances 
+        + Lumpsums
+        + WeeklyIncome
+        + MonthlyIncome
 
-      this.display.remaining = this.round(remaining);
+      return this.display.income = this.round(income);
     },
 
 //--------------------- CALCULATE OUTCOME ----------------------------- \\
 
     // Calculates outcome debt
-    calcPaymentOutcomeBalances() {
+    calcPaymentOutcomeDebt() {
       var expenses = 0;
 
       this.payments.filter((p) => {
@@ -388,7 +391,7 @@ export default {
       }).forEach((p) => {
         expenses += p.Amount
       })
-      this.display.expenses = this.round(expenses);
+      return this.display.expenses = this.round(expenses);
     },
 
     // Calculates Lump sum outcome
@@ -405,7 +408,7 @@ export default {
       }).forEach((p) => {
         expenses += p.Amount
       })
-      this.display.expenses = this.round(expenses);
+      return this.display.expenses = this.round(expenses);
     },
 
     // Caclulate Weekly Outgoings
@@ -422,14 +425,14 @@ export default {
       }).forEach((p) => {
         var StartDate = moment(p.PaymentStart)
         var EndDate = moment(p.PaymentEnd)
-        var TargetDate = moment(p.TargetDate)
+        var TargetDate = moment(this.user.TargetDate)
 
-        if (p.TargetDate < p.PaymentEnd) {EndDate = TargetDate;}
+        if (TargetDate < EndDate) {EndDate = TargetDate;}
         
         expenses += ((p.Amount * EndDate.diff(StartDate, 'weeks')) / p.Frequency)
         
       })
-      this.display.expenses = this.round(expenses);
+      return this.display.expenses = this.round(expenses);
     },
 
     // Calculates Monthly Outcome
@@ -446,38 +449,129 @@ export default {
       }).forEach((p) => {
         var StartDate = moment(p.PaymentStart)
         var EndDate = moment(p.PaymentEnd)
-        var TargetDate = moment(p.TargetDate)
+        var TargetDate = moment(this.user.TargetDate)
 
-        if (p.TargetDate < p.PaymentEnd) {EndDate = TargetDate;}
+        if (TargetDate < EndDate) {EndDate = TargetDate;}
 
         expenses += ((p.Amount * EndDate.diff(StartDate, 'months')) / p.Frequency)
       })
-      this.display.expenses = this.round(expenses);
+      return this.display.expenses = this.round(expenses);
+    },
+
+    // Calculates total outcome
+    calcPaymentOutcomeTotal() {
+      var expenses = 0;
+      var Balances = this.calcPaymentOutcomeDebt();
+      var Lumpsums = this.calcPaymentOutcomeLumpSum();
+      var WeeklyOutcome = this.calcPaymentOutcomeWeekly();
+      var MonthlyOutcome = this.calcPaymentOutcomeMonthly();     
+
+      var expenses = 
+        Balances 
+        + Lumpsums
+        + WeeklyOutcome
+        + MonthlyOutcome
+
+      return this.display.expenses = this.round(expenses);
+    },
+
+//--------------------- CALCULATE BUDGET ----------------------------- \\
+
+    // Calculates income - outcome
+    calcPaymentRemainingTotal() {
+      var remaining = 0;
+      var Income = this.calcPaymentIncomeTotal();
+      var Outcome = this.calcPaymentOutcomeTotal();     
+
+      var remaining = 
+        Income 
+        - Outcome
+
+      return this.display.remaining = this.round(remaining);
+    },
+
+    // Calculates Months remaining until target date
+    calcPaymentRemainingMonths() {
+      var remaining = 0;
+      var TargetDate = moment(this.user.TargetDate)
+      var CurrentDate = moment().format()    
+
+      var remaining = TargetDate.diff(CurrentDate, 'months')
+
+      return this.display.remaining = this.round(remaining);
+    },
+
+    // Calculates weeks remaining until target date
+    calcPaymentRemainingWeeks() {
+      var remaining = 0;
+      var TargetDate = moment(this.user.TargetDate)
+      var CurrentDate = moment().format()    
+
+      var remaining = TargetDate.diff(CurrentDate, 'weeks')
+
+      return this.display.remaining = this.round(remaining);
+    },
+
+    // Calculates maximum weekly budget
+    calcPaymentWeeklyBudget() {
+      var remaining = 0;
+      var IncomeMinusOutcome = this.calcPaymentRemainingTotal();
+      var WeeksRemaining = this.calcPaymentRemainingWeeks();     
+
+      var remaining = 
+        IncomeMinusOutcome 
+        / WeeksRemaining
+
+      return this.display.remaining = this.round(remaining);
+    },
+
+    // Calculates maximum monthly budget
+    calcPaymentMonthlyBudget() {
+      var remaining = 0;
+      var IncomeMinusOutcome = this.calcPaymentRemainingTotal();
+      var MonthsRemaining = this.calcPaymentRemainingMonths();     
+
+      var remaining = 
+        IncomeMinusOutcome 
+        / MonthsRemaining
+
+      return this.display.remaining = this.round(remaining);
     }
 
   },
 
   mounted() {
     axios.get("/api/report").then((res) => {
-      //var remaining = 0.0
-      //var IncomeLumpSum = this.calcPaymentIncomeLumpSum();
-      //var IncomeWeekly = this.calcPaymentIncomeWeekly();
       this.user = res.data.user;
       this.transactions = res.data.transactions;
       this.payments = res.data.payments;
       //this.calcBalance();
+      //this.calcExpenses();
+      //this.calcRemaining();
+
+      // Balances (Income)
       this.calcPaymentIncomeBalances();
-      //this.calcPaymentIncomeBalances();
+
+      // Income Methods
       //this.calcPaymentIncomeLumpSum();
       //this.calcPaymentIncomeWeekly();
-      this.calcPaymentIncomeMonthly();
-      //this.calcExpenses();
-      //this.calcPaymentOutcomeBalances();
+      //this.calcPaymentIncomeMonthly();
+      this.calcPaymentIncomeTotal();
+      
+      // Outcome Methods
+      //this.calcPaymentOutcomeDebt();
       //this.calcPaymentOutcomeLumpSum();
       //this.calcPaymentOutcomeWeekly();
-      this.calcPaymentOutcomeMonthly();
-      this.calcRemaining();
-      //remaining = IncomeLumpSum + IncomeWeekly;
+      //this.calcPaymentOutcomeMonthly();
+      this.calcPaymentOutcomeTotal();
+
+      // Budget Methods
+      this.calcPaymentRemainingTotal();
+      //this.calcPaymentRemainingMonths();
+      //this.calcPaymentRemainingWeeks();
+      //this.calcPaymentMonthlyBudget();
+      //this.calcPaymentWeeklyBudget();
+
     });
   },
 };

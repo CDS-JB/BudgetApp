@@ -65,8 +65,16 @@ body{
     margin-top: 10%;
     background-color: white;
     padding: 30px;
+    max-width: 40%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
+@media only screen and (max-width: 980px){
+    .loginForm{
+        max-width: 80%;
+    }
+}    
 
 /* ------------BUTTONS-------------------*/
 
@@ -124,4 +132,15 @@ body{
     margin-bottom: auto;
 }
 
+/* ---------404--------------- */
+#error {
+    padding: 0px;
+    max-width: 80%;
+    margin-top: 5%;
+    margin-left: auto;
+    margin-right: auto;
+}
 
+#errorImage {
+    max-width: 80%;
+}

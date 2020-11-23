@@ -18,7 +18,7 @@ module.exports = {
     },
 
     deleteItem: async function (app, req, res) {
-        res = await transactionModel.deleteTransaction(app, rreq.body.transactionId, res);
+        res = await transactionModel.deleteTransaction(app, req.body.transactionId, res);
         return res;
     },
 

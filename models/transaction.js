@@ -32,7 +32,7 @@ function createTransactionFromRequest(req)
 function addTransaction(app, newTransaction, res)  {     
     return new Promise (resolve =>  {
         app
-        .get('myDb')
+        .set('myDb')
         .collection("Transaction")
         .insertOne(newTransaction, function (err, dbResp) {
             if (err) {
@@ -49,7 +49,7 @@ function addTransaction(app, newTransaction, res)  {
     });
 }
 
-async function getTransactionsForUser(app, userId)
+async function getTransactionsForUser(app, userId, res)
 {
     return new Promise (resolve =>  {        
         app
@@ -76,7 +76,8 @@ async function getTransactionsForUser(app, userId)
 function updateTransaction(app, transactionInfo, transactionId, res) {   
     return new Promise (resolve =>  {
         var transactionObjectId = new ObjectId(transactionId);
-        app.get('myDb')
+        app
+        .set('myDb')
         .collection("Transaction")
         .updateOne(
             { _id: transactionObjectId },
@@ -99,7 +100,7 @@ function deleteTransaction(app, transactionId, res){
     return new Promise (resolve =>  {
         var transactionObjectId = new ObjectId(transactionId);
         app
-        .get('myDb')
+        .set('myDb')
         .collection("Transacion")
         .deleteOne(
             { _id: transactionObjectId },
