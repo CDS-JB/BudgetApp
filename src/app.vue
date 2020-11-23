@@ -64,7 +64,7 @@ export default {
         },
 
         updateDisplayName(){
-            this.displayName = this.$session.get('name')
+            this.displayName = this.$session.get('FirstNm')
         }
     },
 

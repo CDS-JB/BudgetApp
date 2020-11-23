@@ -1,55 +1,49 @@
 <template>
-  <div class="loginForm shadow p-3 mb-5 bg-white rounded">
-    <form>
-      <div class="form-group">
-        <label>Username</label>
-        <input
-          type="text"
-          class="form-control"
-          v-model="form.username"
-          required
-        />
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input
-          type="password"
-          class="form-control"
-          v-model="form.password"
-          required
-        />
-      </div>
-      <button type="button" class="btn btn-outline-dark" @click="submit">
-        Login
-      </button>
-    </form>
-  </div>
+  	<div class="loginForm shadow p-3 mb-5 bg-white rounded">
+		<form>
+			<div class="form-group">
+				<label>Email <small class="text-danger">*</small></label>
+				<input type="text" class="form-control" :style="error.display ? 'border-color: red' : ''" v-model="form.Email" required>
+			</div>
+			<div class="form-group">
+				<label>Password <small class="text-danger">*</small></label>
+				<input type="password" class="form-control" :style="error.display ? 'border-color: red' : ''" v-model="form.Password" required>
+			</div>
+			<small v-if="error.display" class="form-text text-danger">{{error.message}}</small>
+			<button type="button" class="btn btn-outline-dark" style="margin-top: 10px;" @click="submit">Login</button>
+		</form>
+  	</div>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      form: {
-        username: "",
-        password: "",
-      },
-    };
-  },
+  	data() {
+    	return {
+      		form: {
+				Email: "",
+				Password: ""
+			},
+			error: {
+				display: false,
+				message: 'Debug Error'
+			}
+    	}
+  	},
 
-  methods: {
-    submit() {
-      axios
-        .post("api/login", this.form)
-        .then((res) => {
-          this.$session.start();
-          this.$session.set('name', res.data.user.FirstNm);
-          this.$router.push("/home");
-        })
-        .catch((err) => {
-          console.log(err.response.data);
-        });
-    },
-  },
+	methods: {
+		submit() {
+			axios.post("api/login", this.form)
+				.then((res) => {
+					this.$session.start();
+					this.$session.set('FirstNm', res.data.FirstNm);
+					this.$session.set('BudgetTargetDate', res.data.BudgetTargetDate);
+					this.$router.push("/home");
+				}).catch((err) => {
+					this.form.Password = '';
+					this.error.message = err.response.data.error;
+					this.error.display = true;
+				});
+		},
+	},
 };
 </script>
