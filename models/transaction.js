@@ -49,7 +49,7 @@ function addTransaction(app, newTransaction, res)  {
     });
 }
 
-async function getTransactionsForUser(app, userId)
+async function getTransactionsForUser(app, userId, res)
 {
     return new Promise (resolve =>  {        
         app
