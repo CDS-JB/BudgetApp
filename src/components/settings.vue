@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <!-- <div class="loginForm shadow p-3 mb-5 bg-white rounded">
+    <div class="page">
+        <div class="settingsForm shadow p-3 mb-5 bg-white rounded">
             <form>
                 <div class="form-group">
                     <label>Username</label>
@@ -25,7 +25,7 @@
                 <button type="button" class="btn btn-outline-dark" @click="update">Update</button>
                 <button type="button" class="btn btn-outline-dark" @click="reset">Reset</button>
             </form>
-        </div> -->
+        </div>
         <success-modal v-if="showSuccessModal" :header='"Success"' :body='"Successfully updated your details"' @close="closeModal('success')"></success-modal>
         <error-modal v-if="showErrorModal" :header='"Error"' :body='"Failed to update your details"' @close="closeModal('error')"></error-modal>
     </div>
