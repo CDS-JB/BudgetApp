@@ -43,7 +43,7 @@ export default {
         .post("api/login", this.form)
         .then((res) => {
           this.$session.start();
-          this.$session.set('name', 'test name');
+          this.$session.set('name', res.data.user.FirstNm);
           this.$router.push("/home");
         })
         .catch((err) => {
