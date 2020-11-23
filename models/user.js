@@ -45,7 +45,7 @@ function addUser(app,newUser, res)  {
             console.log(hashedPwd);
 
             app
-            .get('myDb')
+            .set('myDb')
             .collection("User")
             .insertOne(newUser, function (err, dbResp) {
                 if (err) {
@@ -66,7 +66,8 @@ function addUser(app,newUser, res)  {
 function updateUser(app, userInfo, userId, res) {   
     return new Promise (resolve =>  {
         var userObjectId = new ObjectId(userId);
-        app.get('myDb')
+        app
+        .set('myDb')
         .collection("User")
         .updateOne(
             { _id: userObjectId },
@@ -89,7 +90,7 @@ function deleteUser(app, userId, res){
     return new Promise (resolve =>  {
         var userObjectId = new ObjectId(userId);
         app
-        .get('myDb')
+        .set('myDb')
         .collection("User")
         .deleteOne(
             { _id: userObjectId },

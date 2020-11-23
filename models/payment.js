@@ -37,7 +37,7 @@ function createPaymentFromRequest(req)
 function addPayment(app, newPayment, res)  {     
     return new Promise (resolve =>  {
         app
-        .get('myDb')
+        .set('myDb')
         .collection("Payment")
         .insertOne(newPayment, function (err, dbResp) {
             if (err) {
@@ -81,7 +81,8 @@ async function getPaymentsForUser(app, userId, res)
 function updatePayment(app, paymentInfo, paymentId, res) {   
     return new Promise (resolve =>  {
         var paymentObjectId = new ObjectId(paymentId);
-        app.get('myDb')
+        app
+        .set('myDb')
         .collection("Payment")
         .updateOne(
             { _id: paymentObjectId },
