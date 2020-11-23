@@ -105,7 +105,7 @@ function deletePayment(app, paymentId, res){
     return new Promise (resolve =>  {
         var paymentObjectId = new ObjectId(paymentId);
         app
-        .get('myDb')
+        .set('myDb')
         .collection("Payment")
         .deleteOne(
             { _id: paymentObjectId },
