@@ -25,6 +25,7 @@
     "nodemon": "^2.0.6",
     "save-dev": "0.0.1-security",
     "vue-chartjs": "^3.5.1",
+    "vue-clickaway": "^2.2.2",
     "vue-session": "^1.0.0"
   },
   "devDependencies": {
