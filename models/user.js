@@ -37,29 +37,24 @@ async function login(app, emailAddress, password, session, res)
     });   
 }
 
-function addUser(app,newUser, res)  {     
-    return new Promise (resolve =>  {
-        bcrypt.hash(newUser.Password, saltRounds, function (err, hash) 
-        {
-            newUser.Password = hash;
-
-            app
-            .set('myDb')
-            .collection("User")
-            .insertOne(newUser, function (err, dbResp) {
-                if (err) {
-                    console.error(err);
-                    resolve(res.status(400).json({ error: "Failed to create due to: " + err}))
-                }
-                if (dbResp.insertedCount === 1) {
-                    console.info( "Successfully Added" + dbResp.insertedId);
-                    resolve(res.status(200).json({ msg: "Successfully Added user" }));
-                } else {
-                    console.log("Failed to add to db");
-                    resolve(res.status(400).json({ error: "Failed to add to db" }));                
-                }
-            });
-        }); 
+function addUser(app,newUser, res) {     
+    return new Promise (resolve =>  {       
+        app
+        .set('myDb')
+        .collection("User")
+        .insertOne(newUser, function (err, dbResp) {
+            if (err) {
+                console.error(err);
+                resolve(res.status(400).json({ error: "Failed to create due to: " + err}))
+            }
+            if (dbResp.insertedCount === 1) {
+                console.info( "Successfully Added" + dbResp.insertedId);
+                resolve(res.status(200).json({ msg: "Successfully Added user" }));
+            } else {
+                console.log("Failed to add to db");
+                resolve(res.status(400).json({ error: "Failed to add to db" }));                
+            }
+        });
     });
 }
 
@@ -135,15 +130,19 @@ function deleteUser(app, userId, res){
 }
 
 
-function createUserFromRequest(req)
+async function createUserFromRequest(req)
 {
     let newUser = {};
 
     if (req.body.Email != null)
         newUser.Email = req.body.Email;
 
-    if (req.body.Password != null && req.body.Password != '')
-        newUser.Password = req.body.Password;
+    if (req.body.Password != null && req.body.Password != '') {
+        bcrypt.hash(req.body.Password, saltRounds, function (err, hash) 
+        {
+            newUser.Password = hash;
+        });
+    }
         // I think the bcrypt should go here, that way the password will be automatically encrypted for login, add, update - MM
 
     if (req.body.FirstNm != null)
