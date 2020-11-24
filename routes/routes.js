@@ -53,14 +53,14 @@ module.exports = (app) => {
         paymentController.viewAllForUser(app, req, res);
     });
 
-    router.put('/api/addpayment', (req, res) => {
+    router.post('/api/addpayment', (req, res) => {
         paymentController.addItem(app, req, res);
     });
     router.put('/api/updatepayment', (req, res) => {
-        transactionController.amendItem(app, req, res);
+        paymentController.amendItem(app, req, res);
     });
-    router.delete('/api/removepayment', (req, res) => {
-        transactionController.deleteItem(app, req, res);
+    router.post('/api/removepayment', (req, res) => {
+        paymentController.deleteItem(app, req, res);
     });
 
     return router;
