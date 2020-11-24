@@ -15,21 +15,12 @@
                     <input type="text" class="form-control" v-model="user.LastNm" required max:100>
                 </div>
                 <div class="form-group">
+                    <label>Date of Birth</label>
+                    <date-dropdown :yearOptions="dobDropdownYearOptions"></date-dropdown>
+                </div>
+                <div class="form-group">
                     <label>Budget Target Date</label>
-                    <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <label>Day</label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label>Month</label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label>Year</label>
-                            <input type="text" class="form-control">
-                        </div>
-                    </div>
+                    <date-dropdown :yearOptions="budgetDropdownYearOptions"></date-dropdown>
                 </div>
                 <div class="form-group">
                     <label>New Password</label>
@@ -49,7 +40,9 @@
 </template>
 
 <script>
+import moment from 'moment';
 import Modal from './modals/basicModal';
+import DatesDropdown from './dropdowns/dateSelectionDropdown';
 
 export default {
     beforeCreate: function () {
@@ -61,7 +54,8 @@ export default {
 
     components: {
         'success-modal': Modal,
-        'error-modal': Modal
+        'error-modal': Modal,
+        'date-dropdown': DatesDropdown
     },
 
     data() {
@@ -91,6 +85,13 @@ export default {
                 type: 'Error',
                 header: {text: 'Error'},
                 body: {text: 'Failed to update settings due to the following error:', error: 'Debug Error'}
+            },
+            budgetDropdownYearOptions: {
+                minYear: moment().year()
+            },
+            dobDropdownYearOptions: {
+                asc: false,
+                maxYear: moment().year()
             }
         }
     },
