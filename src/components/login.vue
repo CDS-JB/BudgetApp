@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import moment from 'moment';
+
 export default {
   	data() {
     	return {
@@ -36,7 +38,7 @@ export default {
 				.then((res) => {
 					this.$session.start();
 					this.$session.set('FirstNm', res.data.FirstNm);
-					this.$session.set('BudgetTargetDate', res.data.BudgetTargetDate);
+					this.$session.set('BudgetTargetDate', moment(res.data.BudgetTargetDate).format('YYYY-MM-DD'));
 					this.$router.push("/home");
 				}).catch((err) => {
 					this.form.Password = '';

@@ -29,6 +29,7 @@
 
 <script>
 import Modal from './modals/basicModal';
+import moment from 'moment';
 
 export default {
     data(){
@@ -39,6 +40,7 @@ export default {
                 LastNm: '',
                 Password: '',
                 ConfirmPassword: '',
+                BudgetTargetDate: moment().startOf('day').add(1, 'y').format()
             },
             errorModal: {
                 display: false,
@@ -66,7 +68,7 @@ export default {
                     .then((res) => {
                         this.$session.start();
                         this.$session.set('FirstNm', this.form.FirstNm);
-                        this.$session.set('BudgetTargetDate', res.data.BudgetTargetDate);
+                        this.$session.set('BudgetTargetDate', moment(this.form.BudgetTargetDate).format('YYYY-MM-DD'));
                         this.$router.push('/home');
                     }).catch((err) => {
                         this.errorModal.body.error = err.response.data.error;
