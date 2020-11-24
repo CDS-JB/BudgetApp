@@ -17,8 +17,8 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" style="cursor: pointer" @click="show = !show" v-on-clickaway="away">Payments</a>
                             <div class="dropdown-menu" :class="show ? 'show' : ''">
-                                <a class="dropdown-item" href="/payments/index">Show All</a>
-                                <a class="dropdown-item" href="/payments/create">Create</a>
+                                <a class="dropdown-item" style="color: #212529 !important; border: 0" href="/payments/index">Show All</a>
+                                <a class="dropdown-item" style="color: #212529 !important; border: 0" href="/payments/create">Create</a>
                             </div>
                         </li>
                         <li class="nav-item"><a class="nav-link" href="/settings">Settings</a></li>
