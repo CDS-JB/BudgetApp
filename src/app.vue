@@ -17,7 +17,7 @@
                         <li class="nav-item"><a class="nav-link" href="/payments">Payments</a></li>
                         <li class="nav-item"><a class="nav-link" href="/settings">Settings</a></li>
                         <li class="nav-item"><a class="nav-link" href="/about-us">About Us</a></li>
-                        <li class="nav-item"><a class="nav-link" href="" @click="logout">Logout</a></li>
+                        <li class="nav-item"><a class="nav-link" style="cursor: pointer" @click="logout">Logout</a></li>
                     </ul>
                 </div>
             </nav>
@@ -40,13 +40,13 @@ export default {
     methods: {
         logout(){
             if(this.$session.exists()){
-                axios.get("/api/logout")
+                axios.post("/api/logout")
                     .then((res) => {
                         this.$session.destroy()
                         this.$router.push('/')
-                }).catch((err) => {
-                    console.error(err.response.data);
-                })
+                    }).catch((err) => {
+                        console.error(err.response.data);
+                    })
             }
         },
 
