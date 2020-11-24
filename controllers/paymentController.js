@@ -4,11 +4,13 @@ module.exports = {
    
     viewAllForUser: async function (app, req, res) {
         res = await paymentModel.getPaymentsForUser(app, req.session.userId, res)
+        return res;
     },
 
     addItem: async function(app, req, res){
         let payment = paymentModel.createPaymentFromRequest(req);
         res = await paymentModel.addPayment(app, payment, res)
+        return res;
     }, 
     
     amendItem: async function (app, req, res) {
@@ -18,6 +20,8 @@ module.exports = {
     },
 
     deleteItem: async function (app, req, res) {
+        // console.log(req.body)
+        // return res.status(400).json({error: 'Request Body: ' + req.body.paymentId})
         res = await paymentModel.deletePayment(app, req.body.paymentId, res);
         return res;
     },

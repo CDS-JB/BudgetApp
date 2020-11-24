@@ -1,4 +1,5 @@
 const { deleteItem } = require("../controllers/usercontroller");
+const { ObjectID, ObjectId } = require("mongodb");
 
 function createPaymentFromRequest(req)
 {
@@ -28,8 +29,12 @@ function createPaymentFromRequest(req)
     if (req.body.PaymentEnd != null)
         newPayment.PaymentEnd = req.body.PaymentEnd;
         
-    if (req.body.Frequency != null)
+    if (req.body.Frequency != null){
         newPayment.Frequency = req.body.Frequency;
+    } else {
+        newPayment.Frequency = NaN
+    }
+        
 
     return newPayment;
 }
@@ -42,13 +47,14 @@ function addPayment(app, newPayment, res)  {
         .insertOne(newPayment, function (err, dbResp) {
             if (err) {
                 console.error(err);
+                resolve(res.status(400).json({ error: err }));
             }
             if (dbResp.insertedCount === 1) {
                 console.info( "Successfully Added" + dbResp.insertedId);
                 resolve (res.status(200).json({ msg: "Successfully added payment" }));               
             } else {
                 console.log("Failed to add to db");
-                resolve(res.status(400).json({ msg: "Failed to add to db" }));                
+                resolve(res.status(400).json({ error: "Failed to add to db" }));                
             }            
         }); 
     });
@@ -63,7 +69,8 @@ async function getPaymentsForUser(app, userId, res)
         .find({ UserObjectId: userId })
         .toArray(function (err, payments) {
             if (err) {
-                console.error(err);               
+                console.error(err); 
+                resolve(res.status(400).json({ error: err }));              
             }
             if(payments.length >0 ){
                 console.log(payments.length + " payments found for " + userId); 
@@ -71,7 +78,7 @@ async function getPaymentsForUser(app, userId, res)
             }
             else {
                 console.log("No payments found for " + userId);             
-                resolve(res.status(400).json({ msg: "No payments found" }));   
+                resolve(res.status(400).json({ error: "No payments found" }));   
             } 
         });
     });   
@@ -90,11 +97,12 @@ function updatePayment(app, paymentInfo, paymentId, res) {
             function (err, dbResp) {
                 if (err) {
                     console.error(err)
+                    resolve(res.status(400).json({ error: err }));
                 }
                 if (dbResp.modifiedCount === 1) {
                     resolve(res.status(200).json({ msg: "Successfully Amended" }));
                 } else {
-                    resolve(res.status(400).json({ msg: "Not Found" }));
+                    resolve(res.status(400).json({ error: "Not Found" }));
                 }
             }
         );        
@@ -112,11 +120,12 @@ function deletePayment(app, paymentId, res){
             function (err, dbResp) {
                 if (err) {
                     console.error(err)
+                    resolve(res.status(400).json({ error: err }));
                 }
                 if (dbResp.deletedCount === 1) {
                     resolve(res.status(200).json({ msg: "Successfully Removed" }));
                 } else {
-                    resolve(res.status(400).json({ msg: "Not Found" }));
+                    resolve(res.status(400).json({ error: "Not Found" }));
                 }
         })
     })
