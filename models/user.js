@@ -40,7 +40,7 @@ async function login(app, emailAddress, password, session, res)
 function addUser(app,newUser, res) {     
     return new Promise (resolve =>  {       
         app
-        .set('myDb')
+        .set("myDb")
         .collection("User")
         .insertOne(newUser, function (err, dbResp) {
             if (err) {
