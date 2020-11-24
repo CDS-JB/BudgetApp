@@ -123,7 +123,7 @@ export default {
 
   data() {
     return {
-      user: {},
+      user: {TargetDate: this.$session.get('BudgetTargetDate')},
       transactions: [],
       payments: [],
       display: {
@@ -268,7 +268,7 @@ export default {
     round(value, dec = 2) {
       return parseFloat(
         Number(Math.round(value + "e" + dec) + "e-" + dec).toFixed(dec)
-      );
+      ).toFixed(2);
     },
 
 //--------------------- CALCULATE INCOME----------------------------- \\
@@ -281,7 +281,7 @@ export default {
         return (
         p.PaymentType == "Income"
         && p.FrequencyType == 'Balance' 
-        && p.IncInBudget == 'true'
+        && p.IncInBudget == true
         );
       }).forEach((p) => {
         balance += p.Amount
@@ -299,12 +299,13 @@ export default {
         return (
           p.PaymentType == "Income" 
           && p.FrequencyType == 'Lump sum' 
-          && p.IncInBudget == 'true'
-          && p.PaymentStart > moment().format()
-          );
+          && p.IncInBudget == true
+          && moment(p.PaymentStart) > moment()
+          )
       }).forEach((p) => {
-        income += p.Amount
+        income += parseFloat(p.Amount)
       })
+      console.log(income)
       return this.display.income = this.round(income);
     },
 
@@ -316,7 +317,7 @@ export default {
         return (
         p.PaymentType == "Income" 
         && p.FrequencyType == 'Weekly' 
-        && p.IncInBudget == 'true'
+        && p.IncInBudget == true
         && p.PaymentEnd > moment().format()
         );
       }).forEach((p) => {
@@ -344,7 +345,7 @@ export default {
         return (
         p.PaymentType == "Income" 
         && p.FrequencyType == 'Monthly' 
-        && p.IncInBudget == 'true'
+        && p.IncInBudget == true
         && p.PaymentEnd > moment().format()
         );
       }).forEach((p) => {
@@ -367,11 +368,7 @@ export default {
       var WeeklyIncome = this.calcPaymentIncomeWeekly();
       var MonthlyIncome = this.calcPaymentIncomeMonthly();     
 
-      var income = 
-        Balances 
-        + Lumpsums
-        + WeeklyIncome
-        + MonthlyIncome
+      var income = parseFloat(Balances) + parseFloat(Lumpsums) + parseFloat(WeeklyIncome) + parseFloat(MonthlyIncome)
 
       return this.display.income = this.round(income);
     },
@@ -386,7 +383,7 @@ export default {
         return (
         p.PaymentType == "Outcome"
         && p.FrequencyType == 'Debt' 
-        && p.IncInBudget == 'true'
+        && p.IncInBudget == true
         );
       }).forEach((p) => {
         expenses += p.Amount
@@ -402,11 +399,11 @@ export default {
         return (
           p.PaymentType == "Outcome" 
           && p.FrequencyType == 'Lump sum' 
-          && p.IncInBudget == 'true'
-          && p.PaymentStart > moment().format()
+          && p.IncInBudget == true
+          && moment(p.PaymentStart) > moment().format()
           );
       }).forEach((p) => {
-        expenses += p.Amount
+        expenses += parseFloat(p.Amount)
       })
       return this.display.expenses = this.round(expenses);
     },
@@ -419,7 +416,7 @@ export default {
         return (
         p.PaymentType == "Outcome" 
         && p.FrequencyType == 'Weekly' 
-        && p.IncInBudget == 'true'
+        && p.IncInBudget == true
         && p.PaymentEnd > moment().format()
         );
       }).forEach((p) => {
@@ -443,7 +440,7 @@ export default {
         return (
         p.PaymentType == "Outcome" 
         && p.FrequencyType == 'Monthly' 
-        && p.IncInBudget == 'true'
+        && p.IncInBudget == true
         && p.PaymentEnd > moment().format()
         );
       }).forEach((p) => {
@@ -466,11 +463,7 @@ export default {
       var WeeklyOutcome = this.calcPaymentOutcomeWeekly();
       var MonthlyOutcome = this.calcPaymentOutcomeMonthly();     
 
-      var expenses = 
-        Balances 
-        + Lumpsums
-        + WeeklyOutcome
-        + MonthlyOutcome
+      var expenses = parseFloat(Balances) + parseFloat(Lumpsums) + parseFloat(WeeklyOutcome) + parseFloat(MonthlyOutcome)
 
       return this.display.expenses = this.round(expenses);
     },
@@ -483,9 +476,7 @@ export default {
       var Income = this.calcPaymentIncomeTotal();
       var Outcome = this.calcPaymentOutcomeTotal();     
 
-      var remaining = 
-        Income 
-        - Outcome
+      var remaining = Income - Outcome
 
       return this.display.remaining = this.round(remaining);
     },
@@ -518,9 +509,7 @@ export default {
       var IncomeMinusOutcome = this.calcPaymentRemainingTotal();
       var WeeksRemaining = this.calcPaymentRemainingWeeks();     
 
-      var remaining = 
-        IncomeMinusOutcome 
-        / WeeksRemaining
+      var remaining = IncomeMinusOutcome / WeeksRemaining
 
       return this.display.remaining = this.round(remaining);
     },
@@ -531,19 +520,22 @@ export default {
       var IncomeMinusOutcome = this.calcPaymentRemainingTotal();
       var MonthsRemaining = this.calcPaymentRemainingMonths();     
 
-      var remaining = 
-        IncomeMinusOutcome 
-        / MonthsRemaining
+      var remaining = parseFloat(IncomeMinusOutcome) / parseFloat(MonthsRemaining)
 
       return this.display.remaining = this.round(remaining);
     }
-
   },
 
-  mounted() {
-    axios.get("/api/report").then((res) => {
-      this.user = res.data.user;
-      this.transactions = res.data.transactions;
+  mounted() {    
+    axios.get("/api/payments").then((res) => {
+      // this.transactions = res.data.transactions;
+      res.data.payments.forEach((p) => {
+        p.Amount = parseFloat(p.Amount).toFixed(2)
+        if(p.Frequency == null){
+          p.Frequency = 'NaN'
+        }
+      })
+
       this.payments = res.data.payments;
       //this.calcBalance();
       //this.calcExpenses();
@@ -553,7 +545,7 @@ export default {
       this.calcPaymentIncomeBalances();
 
       // Income Methods
-      //this.calcPaymentIncomeLumpSum();
+      // this.calcPaymentIncomeLumpSum();
       //this.calcPaymentIncomeWeekly();
       //this.calcPaymentIncomeMonthly();
       this.calcPaymentIncomeTotal();
