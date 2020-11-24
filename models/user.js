@@ -129,6 +129,15 @@ function deleteUser(app, userId, res){
     })
 }
 
+async function hashPassword(pass)
+{
+    return new Promise (resolve =>  {
+        bcrypt.hash(pass, saltRounds, function (err, hash) 
+        {
+            resolve(hash);
+        });
+    });
+}
 
 async function createUserFromRequest(req)
 {
@@ -137,13 +146,8 @@ async function createUserFromRequest(req)
     if (req.body.Email != null)
         newUser.Email = req.body.Email;
 
-    if (req.body.Password != null && req.body.Password != '') {
-        bcrypt.hash(req.body.Password, saltRounds, function (err, hash) 
-        {
-            newUser.Password = hash;
-        });
-    }
-        // I think the bcrypt should go here, that way the password will be automatically encrypted for login, add, update - MM
+    if (req.body.Password != null && req.body.Password != '')
+        newUser.Password = await hashPassword(req.body.Password);
 
     if (req.body.FirstNm != null)
         newUser.FirstNm = req.body.FirstNm;
@@ -162,8 +166,8 @@ async function createUserFromRequest(req)
 
     if (req.body.WeeklyBudget != null)
         newUser.WeeklyBudget = req.body.WeeklyBudget;
-
-      return newUser;
+           
+    return newUser;
 }
    
 module.exports.login = login;
