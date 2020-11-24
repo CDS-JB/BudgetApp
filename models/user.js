@@ -11,7 +11,8 @@ async function login(app, emailAddress, password, session, res)
         .find({ Email: emailAddress })
         .toArray(function (err, users) {
             if (err) {
-                console.error(err);                
+                console.error(err); 
+                resolve(res.status(400).json({ error: "Failed to login due to: " + err}))               
             } 
             if (users.length > 0) {
                 let user = users[0];
@@ -48,13 +49,14 @@ function addUser(app,newUser, res)  {
             .insertOne(newUser, function (err, dbResp) {
                 if (err) {
                     console.error(err);
+                    resolve(res.status(400).json({ error: "Failed to create due to: " + err}))
                 }
                 if (dbResp.insertedCount === 1) {
                     console.info( "Successfully Added" + dbResp.insertedId);
-                    resolve(res.status(200).json({ statusCode: 200, msg: "Successfully Added user" }));
+                    resolve(res.status(200).json({ msg: "Successfully Added user" }));
                 } else {
                     console.log("Failed to add to db");
-                    resolve(res.status(400).json({ msg: "Failed to add to db" }));                
+                    resolve(res.status(400).json({ error: "Failed to add to db" }));                
                 }
             });
         }); 
@@ -98,11 +100,12 @@ function updateUser(app, userInfo, userId, res) {
             function (err, dbResp) {
                 if (err) {
                     console.error(err)
+                    resolve(res.status(400).json({ error: "Failed to update due to: " + err}))
                 }
                 if (dbResp.modifiedCount === 1) {
                     resolve(res.status(200).json({ msg: "Updated"}));
                 } else {
-                    resolve(res.status(400).json({ error: "Not Found" }));
+                    resolve(res.status(400).json({ error: "User Not Found" }));
                 }
             }
         );        
@@ -120,11 +123,12 @@ function deleteUser(app, userId, res){
             function (err, dbResp) {
                 if (err) {
                     console.error(err)
+                    resolve(res.status(400).json({ error: "Failed to delete due to: " + err}))
                 }
                 if (dbResp.deletedCount === 1) {
                     resolve(res.status(200).json({ msg: "Successfully Removed" }));
                 } else {
-                    resolve(res.status(400).json({ msg: "Not Found" }));
+                    resolve(res.status(400).json({ error: "User Not Found" }));
                 }
         })
     })
