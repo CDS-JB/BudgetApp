@@ -16,8 +16,8 @@ module.exports = {
         });
     },
 
-    addItem: async function (app, req, res) {        
-        let newUser =  userModel.createUserFromRequest(req);                                
+    addItem: async function (app, req, res) {   
+        let newUser =  await userModel.createUserFromRequest(req);                                
         res = await userModel.addUser(app,newUser, res);
         return res;
     },
@@ -28,7 +28,7 @@ module.exports = {
     },
 
     amendItem: async function (app, req, res) {
-        let amendedUser = userModel.createUserFromRequest(req);
+        let amendedUser = await userModel.createUserFromRequest(req);
         res = await userModel.updateUser(app, amendedUser, req.session.userId, res)
         return res;
     },
