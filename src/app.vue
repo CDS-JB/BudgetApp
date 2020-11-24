@@ -14,7 +14,13 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/payments">Payments</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" style="cursor: pointer" @click="show = !show" v-on-clickaway="away">Payments</a>
+                            <div class="dropdown-menu" :class="show ? 'show' : ''">
+                                <a class="dropdown-item" href="/payments/index">Show All</a>
+                                <a class="dropdown-item" href="/payments/create">Create</a>
+                            </div>
+                        </li>
                         <li class="nav-item"><a class="nav-link" href="/settings">Settings</a></li>
                         <li class="nav-item"><a class="nav-link" href="/about-us">About Us</a></li>
                         <li class="nav-item"><a class="nav-link" style="cursor: pointer" @click="logout">Logout</a></li>
@@ -29,11 +35,16 @@
 </template>
 
 <script>
+import {mixin as clickaway} from 'vue-clickaway';
+
 export default {
+    mixins: [clickaway],
+
     data(){
         return {
             displayNav: true,
-            displayName: ''
+            displayName: '',
+            show: false
         }
     },
 
@@ -65,6 +76,10 @@ export default {
 
         updateDisplayName(){
             this.displayName = this.$session.get('FirstNm')
+        },
+
+        away(){
+            this.show = false;
         }
     },
 

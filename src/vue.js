@@ -11,7 +11,8 @@ import Report from './components/report';
 import Login from './components/login';
 import Register from './components/register';
 // import Home from './components/home';
-import Payments from './components/payments';
+import PaymentsIndex from './components/payments/index';
+import PaymentsCreate from './components/payments/create';
 import Settings from './components/settings';
 import AboutUs from './components/aboutUs';
 import Template from './components/template';
@@ -36,7 +37,8 @@ const router = new VueRouter({
         {path: '/register', component: Register, meta: {title: 'Register'}},
         {path: '/home', component: Report, meta: {title: 'Home'}},
         // {path: '/report', component: Report, meta: {title: 'Report'}},
-        {path: '/payments', component: Payments, meta: {title: 'Payments'}},
+        {path: '/payments/index', component: PaymentsIndex, meta: {title: 'Payments'}},
+        {path: '/payments/create', component: PaymentsCreate, meta: {title: 'Payments'}},
         {path: '/settings', component: Settings, meta: {title: 'Settings'}},
         {path: '/about-us', component: AboutUs, meta: {title: 'About Us'}},
         {path: '/newscreen', component: Template, meta: {title: 'Template'}},

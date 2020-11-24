@@ -1,6 +1,6 @@
 <template>
     <div class="dropdown">
-        <button type="button" class="btn dropdown-toggle" @click="show = !show" v-on-clickaway="away">{{selectedItem}}</button>
+        <button type="button" class="btn dropdown-toggle" @click="show = !show" v-on-clickaway="away" :disabled="disabled">{{selectedItem}}</button>
         <div class="dropdown-menu" :class="show ? 'show' : ''" style="max-height: 200px; overflow-y: auto;">
             <button v-for="item in options.items" :key="item" class="dropdown-item" type="button" @click="selected(item)">{{item}}</button>
         </div>
@@ -13,7 +13,7 @@ import {mixin as clickaway} from 'vue-clickaway'
 export default {
     mixins: [clickaway],
 
-    props: ['customOptions'],
+    props: ['customOptions', 'disabled', 'setSelected'],
 
     data() {
         return {
@@ -32,7 +32,6 @@ export default {
 
         selected(item){
             this.show = false
-            this.selectedItem = item
             this.$emit('select', item)
         },
 
@@ -55,6 +54,10 @@ export default {
             handler: function() {
                 this.setOptions();
             }
+        },
+
+        'setSelected': function () {
+            this.selectedItem = this.setSelected
         }
     }
 }
