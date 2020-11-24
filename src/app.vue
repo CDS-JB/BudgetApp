@@ -14,7 +14,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/budget">Budget</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/payments">Payments</a></li>
                         <li class="nav-item"><a class="nav-link" href="/settings">Settings</a></li>
                         <li class="nav-item"><a class="nav-link" href="/about-us">About Us</a></li>
                         <li class="nav-item"><a class="nav-link" href="" @click="logout">Logout</a></li>
