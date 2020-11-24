@@ -20,7 +20,7 @@ module.exports = (app) => {
     router.post('/api/logout', (req,res) => {
         userController.logout(app, req, res);
     })
-    router.post('/api/register', (req, res) => {
+    router.put('/api/register', (req, res) => {
         userController.addItem(app, req, res);
     });
     router.get('/api/updateuser', (req, res) => {

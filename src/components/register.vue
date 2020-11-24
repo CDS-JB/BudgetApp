@@ -55,10 +55,10 @@ export default {
 
     methods:{
         submit(){
-            if(this.user.Password !== this.user.ConfirmPassword){
+            if(this.form.Password !== this.form.ConfirmPassword){
                 this.errorModal.body.error = 'Passwords must match';
                 this.errorModal.display = true;
-            } else if (this.user.Password !== '' && this.user.Password.lenght < 8) {
+            } else if (this.form.Password !== '' && this.form.Password.lenght < 8) {
                 this.errorModal.body.error = 'Password must be at least 8 characters long';
                 this.errorModal.display = true;
             } else {
