@@ -14,14 +14,17 @@
                     <label>Last Name</label>
                     <input type="text" class="form-control" v-model="user.LastNm" required max:100>
                 </div>
+                <hr>
                 <div class="form-group">
-                    <label>Date of Birth</label>
+                    <label><h5>Date of Birth</h5></label>
                     <date-dropdown :yearOptions="dobDropdownYearOptions"></date-dropdown>
                 </div>
+                <hr>
                 <div class="form-group">
-                    <label>Budget Target Date</label>
+                    <label><h5>Budget Target Date</h5></label>
                     <date-dropdown :yearOptions="budgetDropdownYearOptions"></date-dropdown>
                 </div>
+                <hr>
                 <div class="form-group">
                     <label>New Password</label>
                     <input type="password" class="form-control" v-model="user.Password" max:100>

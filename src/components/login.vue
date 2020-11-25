@@ -1,5 +1,9 @@
 <template>
   <div class="loginForm shadow p-3 mb-5 bg-white rounded">
+    <h1>Login</h1>
+    <p class="loginP">
+      Not signed up yet? Hit the register button below to create your account!
+    </p>
     <form>
       <div class="form-group">
         <label>Email <small class="text-danger">*</small></label>
@@ -8,7 +12,7 @@
           class="form-control"
           :style="error.display ? 'border-color: red' : ''"
           v-model="form.Email"
-          required
+          required placeholder="john@smith.com"
         />
       </div>
       <div class="form-group">
@@ -18,7 +22,7 @@
           class="form-control"
           :style="error.display ? 'border-color: red' : ''"
           v-model="form.Password"
-          required
+          required placeholder="p455w0rd"
         />
       </div>
       <small v-if="error.display" class="form-text text-danger">{{

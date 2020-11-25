@@ -22,7 +22,7 @@
                         <td>{{payment.PaymentType}}</td>
                         <td>{{payment.Source}}</td>
                         <td>{{payment.IncInBudget}}</td>
-                        <td id="amount">{{payment.Amount}}</td>
+                        <td class="amount">{{payment.Amount}}</td>
                         <td>{{payment.FrequencyType}}</td>
                         <td>{{payment.PaymentStart}}</td>
                         <td>{{payment.PaymentEnd}}</td>
