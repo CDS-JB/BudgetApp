@@ -272,7 +272,7 @@ export default {
       selectedMonth: 10,
       pieChartData: {
         datasets: [{
-          data: [9926.10, 4248.21, 5677.89],
+          data: [],
           borderWidth: 5,
           backgroundColor: ['#53ed60', '#ed5353', '#5391ed'],
           hoverBackgroundColor: ['#47cc54', '#cc4747', '#477ccc']
@@ -743,6 +743,8 @@ export default {
       //this.calcPaymentRemainingWeeks();
       //this.calcPaymentMonthlyBudget();
       //this.calcPaymentWeeklyBudget();
+
+      this.pieChartData.datasets.data = [this.display.income, this.display.expenses, this.display.remaining]
     });
   },
 };
