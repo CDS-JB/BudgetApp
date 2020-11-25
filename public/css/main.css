@@ -195,6 +195,18 @@ body{
     color: white;
 }
 
+.fit{
+    white-space: nowrap; 
+    text-overflow:ellipsis; 
+    overflow: hidden; 
+    max-width: 80px;
+}
+
+@media only screen and (max-width: 980px){
+.hideMobile{
+    display: none;
+}
+}
 
 
 
@@ -236,3 +248,16 @@ body{
     margin-left: auto;
     margin-right: auto;
 }
+
+.theTeam{
+    padding-top: 100px;
+}
+
+.theTeam h2{
+    color: #085380;
+}
+
+.aboutUsHeader h2{
+    color: #085380;
+}
+

@@ -4,14 +4,14 @@
             <table class="table shadow p-3 mb-5 bg-white rounded">
                 <thead>
                     <tr>
-                        <th scope="col">Payment Type</th>
-                        <th scope="col">Source</th>
-                        <th scope="col">Inc. In Budget</th>
+                        <th scope="col" class="fit">Payment Type</th>
+                        <th scope="col" class="fit">Source</th>
+                        <th scope="col" class="hideMobile">Inc. In Budget</th>
                         <th scope="col">Amount</th>
-                        <th scope="col">Freq. Type</th>
+                        <th scope="col" class="hideMobile">Freq. Type</th>
                         <th scope="col">Payment Start</th>
                         <th scope="col">Payment End</th>
-                        <th scope="col">Freq.</th>
+                        <th scope="col" class="hideMobile">Freq.</th>
                         <th scope="col">
                             <i class="fas fa-trash"></i>
                         </th>
@@ -19,14 +19,14 @@
                 </thead>
                 <tbody>
                     <tr v-for="payment in payments" :key="payment._id">
-                        <td>{{payment.PaymentType}}</td>
-                        <td>{{payment.Source}}</td>
-                        <td>{{payment.IncInBudget}}</td>
+                        <td class="fit">{{payment.PaymentType}}</td>
+                        <td class="fit">{{payment.Source}}</td>
+                        <td class="hideMobile">{{payment.IncInBudget}}</td>
                         <td class="amount">{{payment.Amount}}</td>
-                        <td>{{payment.FrequencyType}}</td>
+                        <td class="hideMobile">{{payment.FrequencyType}}</td>
                         <td>{{payment.PaymentStart}}</td>
                         <td>{{payment.PaymentEnd}}</td>
-                        <td>{{payment.Frequency}}</td>
+                        <td class="hideMobile">{{payment.Frequency}}</td>
                         <td>
                             <button type="button" class="btn" style="padding: .375rem .75rem" @click="remove(payment._id)">
                                 <i class="fas fa-trash"></i>

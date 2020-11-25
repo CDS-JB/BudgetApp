@@ -14,7 +14,7 @@
                       <div class="col-1 iconAlign">
                         <img
                           src="/images/cash-stack.svg"
-                          alt=""
+                          alt="balance"
                           width="40"
                           height="40"
                           title="Bootstrap"
@@ -37,7 +37,7 @@
                       <div class="col-1 iconAlign">
                         <img
                           src="/images/wallet2.svg"
-                          alt=""
+                          alt="remaining"
                           width="40"
                           height="40"
                           title="Bootstrap"
@@ -64,7 +64,7 @@
                       <div class="col-1 iconAlign">
                         <img
                           src="/images/graph-up.svg"
-                          alt=""
+                          alt="income"
                           width="40"
                           height="40"
                           title="Bootstrap"
@@ -87,7 +87,7 @@
                       <div class="col-1 iconAlign">
                         <img
                           src="/images/graph-down.svg"
-                          alt=""
+                          alt="expenses"
                           width="40"
                           height="40"
                           title="Bootstrap"
@@ -194,7 +194,7 @@
                     data-ride="carousel"
                     data-interval="5000"
                   >
-                  <h3 class="tipHeader">Tips<img src="/images/rocket.svg" alt=""></h3>
+                  <h3 class="tipHeader">Tips<img src="/images/rocket.svg" alt="tips"></h3>
                     <div class="carousel-inner" role="listbox">
                       <div class="carousel-item active text-center p-4">
                         <p>Put aside regular savings</p>
