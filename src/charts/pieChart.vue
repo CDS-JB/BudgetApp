@@ -8,6 +8,8 @@ export default {
 
     mixins: [reactiveProp],
 
+    props: ['trigger'],
+
     data() {
         return {
             options: {
@@ -20,8 +22,21 @@ export default {
         }
     },
 
+    methods: {
+        render(){
+            this.renderChart(this.chartData, this.options)
+        }
+    },
+
     mounted() {
-        this.renderChart(this.chartData, this.options)
+        this.render()
+    },
+
+    watch: {
+        trigger: function() {
+            this.$data._chart.destroy()
+            this.render()
+        }
     }
 }
 </script>

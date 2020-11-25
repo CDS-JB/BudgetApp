@@ -177,7 +177,7 @@
               <div style="text-align: -webkit-center">
                 <div style="max-width: 500px">
                     <!-- <line-time-chart :chart-data="showIncome ? incomeLineChartData : expensesLineChartData"></line-time-chart> -->
-                    <pie-chart :chart-data="pieChartData"></pie-chart>
+                    <pie-chart :chart-data="pieChartData" :trigger="pieChartTrigger"></pie-chart>
                 </div>
               </div>
             </div>
@@ -272,7 +272,7 @@ export default {
       selectedMonth: 10,
       pieChartData: {
         datasets: [{
-          data: [],
+          data: [0, 0, 0],
           borderWidth: 5,
           backgroundColor: ['#53ed60', '#ed5353', '#5391ed'],
           hoverBackgroundColor: ['#47cc54', '#cc4747', '#477ccc']
@@ -308,6 +308,7 @@ export default {
         ],
       },
       showIncome: true,
+      pieChartTrigger: 0,
     };
   },
 
@@ -744,7 +745,8 @@ export default {
       //this.calcPaymentMonthlyBudget();
       //this.calcPaymentWeeklyBudget();
 
-      this.pieChartData.datasets.data = [this.display.income, this.display.expenses, this.display.remaining]
+      this.pieChartData.datasets[0].data = [parseFloat(this.display.income).toFixed(2), this.display.expenses, this.display.remaining]
+      this.pieChartTrigger += 1
     });
   },
 };
