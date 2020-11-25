@@ -28,8 +28,9 @@
                     <dropdown :custom-options="frequencyTypes" :set-selected="form.FrequencyType" @select="selectFrequencyType"></dropdown>
                     <small v-if="errors.FrequencyType" class="form-text text-danger">Invalid Frequency Type</small>
                 </div>
+                <hr>
                 <div class="form-group">
-                    <label>Payment Start</label>
+                    <label><h4>Payment Start</h4></label>
                     <!-- start of time check box -->
                     <div class="form-check">
                         <input id="hasBeginningOfTimeCb" type="checkbox" class="form-check-input" @click="checkPaymentStart()">
@@ -38,7 +39,7 @@
                     <date-dropdown @selectDate="selectPaymentStart" @errors="paymentStartError" :disabled="hasBeginningOfTime ? true : false"></date-dropdown>
                 </div>
                 <div class="form-group">
-                    <label>Payment End</label>
+                    <label><h4>Payment End</h4></label>
                     <!-- end of time check box -->
                     <div class="form-check">
                         <input id="hasForeverCb" type="checkbox" class="form-check-input" @click="checkPaymentEnd()">
@@ -46,6 +47,7 @@
                     </div>
                     <date-dropdown @selectDate="selectPaymentEnd" @errors="paymentEndError" :disabled="hasForever ? true : false"></date-dropdown>
                 </div>
+                <hr>
                 <div class="form-group">
                     <label>Frequency</label>
                     <input type="number" class="form-control" min="1" :disabled="hasForever ? true : false" v-model="form.Frequency">

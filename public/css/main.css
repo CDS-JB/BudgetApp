@@ -97,6 +97,23 @@ body{
 }
 }
 
+.loginButton{
+    margin-bottom: 5%;
+}
+
+.loginP{
+    padding-bottom: 10px;
+}
+
+.loginForm h1{
+    color: #085380;
+    font-weight: 500;
+}
+
+.loginForm p{
+    color: grey;
+}
+
 /* ------------BUTTONS-------------------*/
 
 .btn{
@@ -146,6 +163,8 @@ body{
 }
 
 
+
+
 /* ----------ICONS--------------- */
 .iconAlign{
     margin-top: auto;
@@ -167,7 +186,7 @@ body{
 
 
 /* ----------Payments----------- */
-#amount::before{
+.amount::before{
     content: "£";
 }
 
@@ -175,6 +194,8 @@ body{
     background-color: #218ACC;
     color: white;
 }
+
+
 
 
 
@@ -206,4 +227,12 @@ body{
     font-size: 1.2em;
 }
 
+/* -----------ABOUT US ---------- */
 
+
+.teamImage{
+    border-radius: 50%;
+    max-width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}
