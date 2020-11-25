@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div class="page">
         <div>
-            <table class="table">
+            <table class="table shadow p-3 mb-5 bg-white rounded">
                 <thead>
                     <tr>
                         <th scope="col">Payment Type</th>
@@ -22,7 +22,7 @@
                         <td>{{payment.PaymentType}}</td>
                         <td>{{payment.Source}}</td>
                         <td>{{payment.IncInBudget}}</td>
-                        <td>{{payment.Amount}}</td>
+                        <td id="amount">{{payment.Amount}}</td>
                         <td>{{payment.FrequencyType}}</td>
                         <td>{{payment.PaymentStart}}</td>
                         <td>{{payment.PaymentEnd}}</td>
