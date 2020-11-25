@@ -168,36 +168,18 @@
         <!-- /* START OF CHART */ -->
         <div class="col-lg-6">
           <div class="reportChart">
-            <div>
-              <button
-                ref="chartswap"
-                type="button"
-                class="btn"
-                :class="showIncome ? 'btn-income' : 'btn-income'"
-                @click="showIncome = true"
-              >
-                Income
-              </button>
-              <button
-                ref="chartswap"
-                type="button"
-                class="btn"
-                :class="showIncome ? 'btn-expense' : 'btn-expense'"
-                @click="showIncome = false"
-              >
-                Expenses
-              </button>
-            </div>
-            <div
-              class="shadow p-3 mb-5 bg-white rounded"
-              style="max-width: 500px"
-            >
-              <h4>Chart Overview</h4>
-              <line-time-chart
-                :chart-data="
-                  showIncome ? incomeLineChartData : expensesLineChartData
-                "
-              ></line-time-chart>
+            <!-- <div>
+              <button ref="chartswap" type="button" class="btn btn-income" @click="showIncome = true">Income</button>
+              <button ref="chartswap" type="button" class="btn btn-expense" @click="showIncome = false">Expenses</button>
+            </div> -->
+            <div class="shadow p-3 mb-5 bg-white rounded" style="margin: 10px">
+              <!-- <h4>Chart Overview</h4> -->
+              <div style="text-align: -webkit-center">
+                <div style="max-width: 500px">
+                    <!-- <line-time-chart :chart-data="showIncome ? incomeLineChartData : expensesLineChartData"></line-time-chart> -->
+                    <pie-chart :chart-data="pieChartData"></pie-chart>
+                </div>
+              </div>
             </div>
           </div>
           <!-- /* END OF CHART */ -->
@@ -268,10 +250,12 @@
 <script>
 import moment from "moment";
 import lineTime from "../charts/line-time";
+import pieChart from "../charts/pieChart";
 
 export default {
   components: {
     "line-time-chart": lineTime,
+    "pie-chart": pieChart
   },
 
   data() {
@@ -286,6 +270,15 @@ export default {
         remaining: 0.0,
       },
       selectedMonth: 10,
+      pieChartData: {
+        datasets: [{
+          data: [],
+          borderWidth: 5,
+          backgroundColor: ['#53ed60', '#ed5353', '#5391ed'],
+          hoverBackgroundColor: ['#47cc54', '#cc4747', '#477ccc']
+        }],
+        labels: ['Income', 'Expenses', 'Remaining']
+      },
       incomeLineChartData: {
         labels: [],
         datasets: [
@@ -461,7 +454,7 @@ export default {
         .forEach((p) => {
           income += parseFloat(p.Amount);
         });
-      console.log(income);
+
       return (this.display.income = this.round(income));
     },
 
@@ -750,6 +743,8 @@ export default {
       //this.calcPaymentRemainingWeeks();
       //this.calcPaymentMonthlyBudget();
       //this.calcPaymentWeeklyBudget();
+
+      this.pieChartData.datasets.data = [this.display.income, this.display.expenses, this.display.remaining]
     });
   },
 };
