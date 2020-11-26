@@ -37,7 +37,7 @@ async function login(app, emailAddress, password, session, res)
     });   
 }
 
-function addUser(app,newUser, res) {     
+function addUser(app,newUser, session, res) {     
     return new Promise (resolve =>  {       
         app
         .set("myDb")
@@ -49,6 +49,8 @@ function addUser(app,newUser, res) {
             }
             if (dbResp.insertedCount === 1) {
                 console.info( "Successfully Added" + dbResp.insertedId);
+                session.login = true
+                session.userId = dbResp.insertedId
                 resolve(res.status(200).json({ msg: "Successfully Added user" }));
             } else {
                 console.log("Failed to add to db");
