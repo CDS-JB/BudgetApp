@@ -253,6 +253,13 @@ import lineTime from "../charts/line-time";
 import pieChart from "../charts/pieChart";
 
 export default {
+  beforeCreate: function () {
+    if (!this.$session.exists()){
+      console.error('Unauthenticated. Redirecting to Welcome')
+      this.$router.push('/')
+    }
+  },
+  
   components: {
     "line-time-chart": lineTime,
     "pie-chart": pieChart
